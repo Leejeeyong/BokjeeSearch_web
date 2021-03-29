@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>공공복지서비스</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<meta name="keywords" content="서울시,복지정책,복지사업,희망복지,희망온돌,희망나눔,어르신복지,인생이모작,기초노령연금,장애인지원,장애인복지,노숙인,자활지원">
+	<meta name="description" content="서울시가 추진하는 복지, 어르신, 장애인, 노숙인 자활지원 분야의 정책, 사업, 자료, 최신소식을 공유합니다.">
+	<meta name="copyright" content="copyrights 2019 사이트명. all rights reserved">
+    <!--css 모든페이지용 -->
+        <link type="text/css" rel="stylesheet" href="/css/common.css">
+        <link type="text/css" rel="stylesheet" href="/css/main.css?ver=20201127">
+        <link type="text/css" rel="stylesheet" href="/css/respon.css">
+        <link type="text/css" rel="stylesheet" href="/css/layer.css?ver=20201104">
+        <link type="text/css" rel="stylesheet" href="/css/add.css">
+        <link type="text/css" rel="stylesheet" href="/css/taxi.css"> 
+     <!-- js 모든페이지 용-->
+        <script type="text/javascript" src="https://weblog2.eseoul.go.kr/event/?ra=EV8ZLZBPBUQFXXPTPMSYQEOSBIBJCZNZ&amp;service_id=wis.seoul.go.kr&amp;pc_id=16148236718759184044455&amp;session_id=&amp;screen=1280x720&amp;language=ko&amp;mode=&amp;referrer=https%3A%2F%2Fwww.google.com%2F&amp;unique_info=%5B%7B%22code%22%3A%22PLUG%22%2C%20%22hsCode%22%3A%22c0bab728eca2d35d837b397bc80e9cba%22%7D%2C%20%7B%22code%22%3A%22UAGT%22%2C%20%22hsCode%22%3A%2272766ab2b1c85af98adbbb9683600fdf%22%7D%2C%20%7B%22code%22%3A%22SCRE%22%2C%20%22hsCode%22%3A%22572cda553fa9ac8d225f93d1bae76ab8%22%7D%5D&amp;e_url=https%3A%2F%2Fwis.seoul.go.kr%2F&amp;e_title=%EC%84%9C%EC%9A%B8%EB%B3%B5%EC%A7%80%ED%8F%AC%ED%84%B8&amp;e_type=pageview&amp;END" async="" charset="UTF-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/AutoEvent.js?2021229" async="" charset="utf-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/seetoc.js?2021229" async="" charset="utf-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/wl6.js?2021229" async="" charset="utf-8"></script><script src="https://connect.facebook.net/en_US/sdk.js?hash=db4c8ab85636aafa2fef27544a2be01e&amp;ua=modern_es6" async="" crossorigin="anonymous"></script><script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v3.2"></script><script src="/js/jquery-1.11.0.min.js"></script>
+	<script src="/js/common.js"></script>
+	<!-- js 메인페이지용 : 분기 적용 -->
+	<script src="/js/jquery.flexslider-min.js"></script>
+	<script src="/js/main.js?ver=20200224"></script>
+	<script src="/js/bx_slider.js"></script><!--MAIN20191111-->
+	<script src="/js/disable/findWelfareMain.js"></script>
+
+    <script>
+		$(document).ready(function(){				
+		
+			// 새소식, 정책자료실, 장애인 자료실 조회
+	        fn_getNoticeContent(); 
+	
+	     	// 영상으로 보는 복지, 이미지로 보는 복지, 웹툰 조회.
+	        fn_getDataContent(); 
+	     	
+			// 복지서비스 맞춤조회 - 장애등급 셋팅.
+			initFindWelfare(); 
+			
+			// 복지시설 검색 자치구, 시설 종류 조회.
+			selectAtdrcCd(); 
+			
+			//서울복지서비스 맞춤검색
+			$('input[name="main_radio"]:radio[value="2"]').prop('checked',true);
+			$('.tap1').addClass('on');
+	
+			if($("input:radio[name='main-radio1']").is(":checked")){
+				$('#tab1').show();	
+			}else if($("input:radio[name='main-radio2']").is(":checked")){
+				$('#tab2').show();	
+			}else if($("input:radio[name='main-radio3']").is(":checked")){
+				$('#tab3').show();	
+			}
+		});
+
+
+	// 서울복지서비스 맞춤검색
+	function go_search(){
+		var service = $("#gubun").val();
+		if(service == "1"){
+			$("#searchForm").attr("action", "/handicap/findWelfareService.do");
+			$("#searchForm").submit();
+		}else if(service == "2"){
+			$("#searchForm").attr("action", "/hope/careSearch.do");						
+			$("#searchForm").submit();
+		}else if(service == "3"){
+			var signguNm = $("#schAtdrcCd option:selected").text();	
+			if(signguNm == "복지시설 지역선택" || signguNm == "전체")$("#signguNm").val("");
+			else $("#signguNm").val(signguNm);
+			
+			$("#searchForm").attr("action", "/hope/customizedSearch.do");			
+			$("#searchForm").submit();
+		}
+	}
+	
+	function change_gubun(gubun){
+		$("#gubun").val(gubun);console.log(gubun);
+		if(gubun == '2' || gubun == '3'){
+			$("#searchBtn").css("margin-top", "30px");
+		}else{
+			$("#searchBtn").css("margin-top", "0px");
+		}
+	}	
+    
+    <body style>
+        <script>
+            $(Document).ready(function(){
+                $('.main-slider.m_bxslider').bxSlider({
+                    mode:'fade',
+                    auto: true,
+                    autoControls: true,
+                    pause:30000,
+                    stopAutoOnClick:true,
+                    pager:true,
+                    ariaHideen:true
+                });
+            });
+        </script>
+        <div class="floor1_right">
+        <div class="main-radio">
+            <div class="main-title bg2">
+                "공공노인복지서비스"
+                <br>
+                <strong>맞춤검색</strong>
+            </div>
+            <form name ="searchForm" id="searchForm" method="POST">
+            <div class="about-28px">
+                <div class="radio-list">
+                    <u1 class="cfix">
+                        
+                        <li>
+                            <input type="radio" name="main_radio" id="main-radio1" value="2" onclick="change_gubun('1');">
+                            <label class="tap1 on" for="main-radio1">장애인 지원</label>
+                            
+                        </li>
+                        <li>
+                            <input type="radio" name="main_radio" id="main-radio2" value="1" onclick="change_gubun('2');">
+                            <label class="tap2" for="main-radio2">복지시설</label>
+                            
+                        </li>
+                    </u1>
+                </div>
+                <div class="select-list tap1-con on" id="table">
+                    <u1 class="cfix">
+                        
+                        <li>
+                            <select name="age" id="age" title="출생연도 선택" style="height: 40px; font-size: 15px;">
+                            <option value="all"selected="selected">출생연도 선택</option>
+                            <option value="65">1965이전</option>
+                            <option value="65">1956</option>
+                            <option value="64">1957</option>
+                            <option value="63">1958</option>
+                            <option value="62">1959</option>
+                            <option value="61">1960</option>
+                            <option value="60">1961</option>
+                            <option value="59">1962</option>
+                            <option value="58">1963</option>
+                            <option value="57">1964</option>
+                            <option value="56">1965</option>
+                            <option value="55">1966</option>
+                            <option value="54">1967</option>
+                            <option value="53">1968</option>
+                            <option value="52">1969</option>
+                            <option value="51">1970</option>
+                            <option value="50">1971</option>
+                            <option value="49">1972</option>
+                            <option value="48">1973</option>
+                            <option value="47">1974</option>
+                            <option value="46">1975</option>
+                            <option value="45">1976</option>
+                            <option value="44">1977</option>
+                            <option value="43">1978</option>
+                            <option value="42">1979</option>
+                            <option value="41">1980</option>
+                            <option value="40">1981</option>
+                            <option value="39">1982</option>
+                            <option value="38">1983</option>
+                            <option value="37">1984</option>
+                            <option value="36">1985</option>
+                            <option value="35">1986</option>
+                            <option value="34">1987</option>
+                            <option value="33">1988</option>
+                            <option value="32">1989</option>
+                            <option value="31">1990</option>
+                            <option value="30">1991</option>
+                            <option value="29">1992</option>
+                            <option value="28">1993</option>
+                            <option value="27">1994</option>
+                            <option value="26">1995</option>
+                            <option value="25">1996</option>
+                            <option value="24">1997</option>
+                            <option value="23">1998</option>
+                            <option value="22">1999</option>
+                            <option value="21">2000</option>
+                            <option value="20">2001</option>
+                            <option value="19">2002</option>
+                            <option value="18">2003</option>
+                            <option value="17">2004</option>
+                            <option value="16">2005</option>
+                            <option value="15">2006</option>
+                            <option value="14">2007</option>
+                            <option value="13">2008</option>
+                            <option value="12">2009</option>
+                            <option value="11">2010</option>
+                            <option value="10">2011</option>
+                            <option value="9">2012</option>
+                            <option value="8">2013</option>
+                            <option value="7">2014</option>
+                            <option value="6">2015</option>
+                            <option value="5">2016</option>
+                            <option value="4">2017</option>
+                            <option value="3">2018</option>
+                            <option value="2">2019</option>
+                            <option value="1">2020</option>
+                            <option value="0">2021</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select name="sex" id="sex" title="성별 선택" style="height: 40px; font-size: 15px;">
+                            <option value="all" selected="selected">성별선택</option>
+                            <option value="M">남</option>
+                            <option value="F">여</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select name="household" id="household" title="가구기준 선택" style="height: 40px; font-size: 15px;">
+                            <option value="all" selected="selected">가구기준 선택</option>
+                            <option value="1">독거한정</option>
+                            <option value="2">비독거한정</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select name="rating" id="rating" title="장애정도 선택" style="height: 40px; font-size: 15px;">
+                                <option value>장애정도 선택</option>
+                                <option value="Y">심한장애</option>
+                                <option value="N">심하지않은 장애</option>
+                            </select>
+                        </li>
+                        
+                    </u1>
+                </div>
+                <div class="select-list tap2-con" id="tab2">
+                    <u1 class="cfix">
+                        <li>
+                            <select name="schAtdrcCd" id="schAtdrcCd" title="복지시설 지역 선택">
+                                <option value>복지시설 지역선택</option>
+                                <option value>전체</option>
+                                <option value="11110">종로구</option>
+                                <option value="11140">중구</option>
+                                <option value="11170">용산구</option>
+                                <option value="11200">성동구</option>
+                                <option value="11215">광진구</option>
+                                <option value="11230">동대문구</option>
+                                <option value="11260">중랑구</option>
+                                <option value="11290">성북구</option>
+                                <option value="11305">강북구</option>
+                                <option value="11320">도봉구</option>
+                                <option value="11350">노원구</option>
+                                <option value="11380">은평구</option>
+                                <option value="11410">서대문구</option>
+                                <option value="114400">마포구</option>
+                                <option value="11470">양천구</option>
+                                <option value="11500">강서구</option>
+                                <option value="11530">구로구</option>
+                                <option value="11545">금천구</option>
+                                <option value="11560">영등포구</option>
+                                <option value="11590">동작구</option>
+                                <option value="11620">관악구</option>
+                                <option value="11650">서초구</option>
+                                <option value="11680">강남구</option>
+                                <option value="11710">송파구</option>
+                                <option value="11740">강동구</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select name="fcltyKind" id="fcltyKind" title="복지시설 종류 선택">
+                            <option value>복지시설 종류 선택</option>
+                            <option value="1209">(건강)건강기타</option>
+                            <option value="1701">(건강가정)건강 가정 지원센터</option>
+                            <option value="1901">(기타)기타시설</option>
+                            <option value="0105">(노인)노인기타</option>
+                            <option value="0103">(노인)보호전문기관</option>
+                            <option value="0103">(노인)노인여가복지시설</option>
+                            <option value="0107">(노인)노인의료복지시설</option>
+                            <option value="0101">(노인)노인주거복지시설</option>
+                            <option value="0104">(노인)재가노인복지시설</option>
+                        </select>
+                        </li>
+                    </u1>
+                </div>
+                </div>
+                <a class="search-button" href="javascript:;" onclick="go_serch();" id="searchBtn" style="margin-top:30px;">
+                <span>검색하기</span>
+                </a>
+                <input type="hidden" id="signgNm" name="signgNm" value>
+                <input type="hideen" id="gubun" name="gubun" value="3">
+            </div>
+            </form>
+        </div>
+        </body>
+
+        
+</html>
+
+        </html>

@@ -1,0 +1,1720 @@
+<html lang="ko"><head>
+	<meta charset="utf-8">
+	<title>서울복지포털</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<meta name="keywords" content="서울시,복지정책,복지사업,희망복지,희망온돌,희망나눔,어르신복지,인생이모작,기초노령연금,장애인지원,장애인복지,노숙인,자활지원">
+	<meta name="description" content="서울시가 추진하는 복지, 어르신, 장애인, 노숙인 자활지원 분야의 정책, 사업, 자료, 최신소식을 공유합니다.">
+	<meta name="copyright" content="copyrights 2019 사이트명. all rights reserved">
+	<!-- css 모든페이지용 -->
+	<link type="text/css" rel="stylesheet" href="/css/common.css">
+	<link type="text/css" rel="stylesheet" href="/css/main.css?ver=20201127">
+	<link type="text/css" rel="stylesheet" href="/css/respon.css">
+	<link type="text/css" rel="stylesheet" href="/css/layer.css?ver=20201104">
+	<link type="text/css" rel="stylesheet" href="/css/add.css">
+	<link type="text/css" rel="stylesheet" href="/css/taxi.css">  
+	<!-- js 모든페이지용 -->
+	<script type="text/javascript" src="https://weblog2.eseoul.go.kr/event/?ra=EV8ZLZBPBUQFXXPTPMSYQEOSBIBJCZNZ&amp;service_id=wis.seoul.go.kr&amp;pc_id=16148236718759184044455&amp;session_id=&amp;screen=1280x720&amp;language=ko&amp;mode=&amp;referrer=https%3A%2F%2Fwww.google.com%2F&amp;unique_info=%5B%7B%22code%22%3A%22PLUG%22%2C%20%22hsCode%22%3A%22c0bab728eca2d35d837b397bc80e9cba%22%7D%2C%20%7B%22code%22%3A%22UAGT%22%2C%20%22hsCode%22%3A%2272766ab2b1c85af98adbbb9683600fdf%22%7D%2C%20%7B%22code%22%3A%22SCRE%22%2C%20%22hsCode%22%3A%22572cda553fa9ac8d225f93d1bae76ab8%22%7D%5D&amp;e_url=https%3A%2F%2Fwis.seoul.go.kr%2F&amp;e_title=%EC%84%9C%EC%9A%B8%EB%B3%B5%EC%A7%80%ED%8F%AC%ED%84%B8&amp;e_type=pageview&amp;END" async="" charset="UTF-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/AutoEvent.js?2021229" async="" charset="utf-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/seetoc.js?2021229" async="" charset="utf-8"></script><script type="text/javascript" src="//weblog.eseoul.go.kr/wlo/js/wl6.js?2021229" async="" charset="utf-8"></script><script src="https://connect.facebook.net/en_US/sdk.js?hash=db4c8ab85636aafa2fef27544a2be01e&amp;ua=modern_es6" async="" crossorigin="anonymous"></script><script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v3.2"></script><script src="/js/jquery-1.11.0.min.js"></script>
+	<script src="/js/common.js"></script>
+	<!-- js 메인페이지용 : 분기 적용 -->
+	<script src="/js/jquery.flexslider-min.js"></script>
+	<script src="/js/main.js?ver=20200224"></script>
+	<script src="/js/bx_slider.js"></script><!--MAIN20191111-->
+	<script src="/js/disable/findWelfareMain.js"></script>
+	<script>
+		$(document).ready(function(){				
+		
+			// 새소식, 정책자료실, 장애인 자료실 조회
+	        fn_getNoticeContent(); //지수씨
+	
+	     	// 영상으로 보는 복지, 이미지로 보는 복지, 웹툰 조회.
+	        fn_getDataContent(); //기태대리님
+	     	
+			// 복지서비스 맞춤조회 - 장애등급 셋팅.
+			initFindWelfare(); //경민씨
+			
+			// 복지시설 검색 자치구, 시설 종류 조회.
+			selectAtdrcCd(); //경민씨
+			
+			//서울복지서비스 맞춤검색
+			$('input[name="main_radio"]:radio[value="2"]').prop('checked',true);
+			$('.tap1').addClass('on');
+	
+			if($("input:radio[name='main-radio1']").is(":checked")){
+				$('#tab1').show();	
+			}else if($("input:radio[name='main-radio2']").is(":checked")){
+				$('#tab2').show();	
+			}else if($("input:radio[name='main-radio3']").is(":checked")){
+				$('#tab3').show();	
+			}
+		});
+
+
+	// 서울복지서비스 맞춤검색
+	function go_search(){
+		var service = $("#gubun").val();
+		if(service == "1"){
+			$("#searchForm").attr("action", "/handicap/findWelfareService.do");
+			$("#searchForm").submit();
+		}else if(service == "2"){
+			$("#searchForm").attr("action", "/hope/careSearch.do");						
+			$("#searchForm").submit();
+		}else if(service == "3"){
+			var signguNm = $("#schAtdrcCd option:selected").text();	
+			if(signguNm == "복지시설 지역선택" || signguNm == "전체")$("#signguNm").val("");
+			else $("#signguNm").val(signguNm);
+			
+			$("#searchForm").attr("action", "/hope/customizedSearch.do");			
+			$("#searchForm").submit();
+		}
+	}
+	
+	function change_gubun(gubun){
+		$("#gubun").val(gubun);console.log(gubun);
+		if(gubun == '2' || gubun == '3'){
+			$("#searchBtn").css("margin-top", "30px");
+		}else{
+			$("#searchBtn").css("margin-top", "0px");
+		}
+	}
+	
+	// 복지시설 검색 자치구, 시설 종류 조회.
+	function selectAtdrcCd(){
+		/* 자치구 */
+		$.ajax({
+			type : "POST",
+			async : true,
+			url : "/rest/po/wp/human/search/cmmncd/AD0001",
+			data: null,
+			dataType: "json",
+			cache:false,
+			contentType :"application/json; charset=UTF-8",
+			success: function(data) {
+				var list = data["AD0001"];
+				$("#schAtdrcCd").append("<option value=''>복지시설 지역선택</option>");
+				$("#schAtdrcCd").append("<option value=''>전체</option>");
+				if(list==null){
+					list=0;
+				}
+				for(var i = 0; i < list.length; i++){
+					if(list[i].code != '99999')$("#schAtdrcCd").append("<option value="+list[i].code+">"+list[i].name+"</option>");
+				}
+			},
+		    error : function(error) {
+	            console.log("ERROR");
+	        }
+		});
+		
+		//시설종류
+		$.ajax({
+			type : "POST",
+			async : true,
+			url : "/rest/po/wp/community/facility/select_kindfacility",
+			data: null,
+			dataType: "json",
+			cache:false,
+			contentType :"application/json; charset=UTF-8",
+			success: function(data) {
+				var kind = data["kind"];
+				
+				var kindHtml = "";
+				kindHtml += "<option value=''>복지시설 종류선택</option>";
+				if(kind==null){
+					kind=0;
+				}
+				//alert(kind[0].kindName);
+				for(var i = 0; i < kind.length; i++){
+					if(kind[i].kindName!=""){
+						kindHtml += "<option value="+kind[i].kindCd+">"+kind[i].kindName+"</option>";
+					}
+				}				
+				$("#fcltyKind").html(kindHtml);
+			},
+		    error    : function(error) {
+	            console.log("ERROR");
+	        }
+		});
+
+	}
+	
+	// 새소식, 정책자료실, 장애인 자료실 조회
+	function fn_getNoticeContent(){
+		var rowCnt = 5;
+
+		// 새소식
+		$.ajax({
+			type : "GET",
+			cache : false,
+			url : "/rest/rss/mainnews",
+			dataType: "json",
+			contentType :"application/json; charset=UTF-8",
+			success: function(data) {
+				var html = "";
+				//alert("data.newsList.length : " + data.newsList.length);
+				if(data.newsList.length > 0){
+					for(var i=0; i < data.newsList.length; i++){
+						html += '<li><div class="news">';
+						switch(data.newsList[i].gubun){
+							case "hope" : 
+								html += '<span class="green">희망복지</span>';
+								break;
+							case "senior" : 
+								html += '<span class="blue">어르신복지</span>';
+								break;
+							case "middleage" : 
+								html += '<span class="red">중장년복지</span>';
+								break;
+							case "handicap" : 
+								html += '<span class="purple">장애인복지</span>';
+								break;
+							case "homeless" : 
+								html += '<span class="brown">자활복지</span>';
+								break;								
+						}
+						html += '<a href="/news/welfareNews.do?newsGubun=' + data.newsList[i].gubun + '&newsLink=' + data.newsList[i].link + '">'+ data.newsList[i].title +'</a></div><span class="date">'+ data.newsList[i].pubDate.substring(0,10) +'</span></li>';
+					}
+					$('#newsList').html(html);
+				}
+	        },
+	        error    : function(error) {
+	            console.log("ERROR");
+	        }
+	    });
+
+		// 정책자료실, 정보통통마당, 홍보자료실, 복지관새소식 조회
+		$.ajax({
+			type : "POST",
+	  		dataType : "json",
+	  		cache : false,
+	  		url: "/rest/main/bbs",
+	  		data: JSON.stringify({"rowCnt" : rowCnt}),
+	  		contentType :"application/json; charset=UTF-8",
+	  		success: function(data){
+	  		  	var result = data.resultList;
+	  		  	var content = "";
+
+	  			// 정책자료실
+	  		  	if(result.length > 0){
+		  		  	for(var i=0; i < result.length; i++){
+			  		  	content += '<li>';
+			  		  	content += '	<div><a href="/data/policy.do?no='+result[i]['no']+'">'+result[i]['title']+'</a></div>';
+			  		  	content += '	<span class="date">'+result[i]['rgsde']+'</span>';
+			  		  	content += '</li>';
+		  		  	}
+	  		  	}
+	  		  	$('#bbsList').html(content);
+
+	  		  	// 정보통통마당
+	  		  	result = data.disableList;
+	  		  	content = "";
+
+	  		  	if(result.length > 0){
+		  		  	for(var i=0; i < result.length; i++){
+			  		  	content += '<li>';
+			  		  	content += '	<div><a href="/human/example.do?no='+result[i]['no']+'">'+result[i]['title']+'</a></div>';
+			  		  	content += '	<span class="date">'+result[i]['rgsde']+'</span>';
+			  		  	content += '</li>';
+		  		  	}
+	  		  	}
+				$('#exampleList').html(content);
+				
+				// 복지관 새소식
+	  		  	result = data.centerNewsList;
+	  		  	content = "";
+
+	  		  	if(result.length > 0){
+		  		  	for(var i=0; i < result.length; i++){
+			  		  	content += '<li>';
+			  		  	content += '	<div><a href="/news/welfareNewsCenter.do?no='+result[i]['no']+'">'+result[i]['title']+'</a></div>';
+			  		  	content += '	<span class="date">'+result[i]['rgsde']+'</span>';
+			  		  	content += '</li>';
+		  		  	}
+	  		  	}
+				$('#centerNewsList').html(content);
+				
+				// 홍보 자료실
+				result = data.promotionList;
+	  		  	content = "";
+	  			
+	  		  	if(result.length > 0){
+		  		  	for(var i=0; i < result.length; i++){
+			  		  	content += '<li>';
+			  		  	content += '	<div><a href="/data/promotion.do?gbn='+result[i]['gubun']+'&no='+result[i]['no']+'">'+result[i]['title']+'</a></div>';
+			  		  	content += '	<span class="date">'+result[i]['rgsde']+'</span>';
+			  		  	content += '</li>';
+		  		  	}
+	  		  	}
+				$('#promotionList').html(content);
+	  		},
+	  		error: function(error){
+	  			console.log("B:"+error.message);
+	  		}
+	 	});
+	}
+
+	// 영상으로 보는 복지, 이미지로 보는 복지
+    function fn_getDataContent(){
+    	// 영상으로 보는 복지
+    	$.ajax({
+			type : "POST",
+			cache : false,
+			url : "/rest/main/humanbbs",
+			data : JSON.stringify({ "gubun" : "data_promotion_video" }),
+			dataType: "json",
+			contentType :"application/json; charset=UTF-8",
+			success: function(data) {
+				var result = data.resultList;
+
+				var videoHtml = '';
+				for(var i=0; i < result.length; i++){
+					videoHtml += '<li>';					
+					if(result[i].thumbFileNo == ''){
+						videoHtml += '<div class="photo">';
+						videoHtml += '	<a href="/data/promotion.do?gbn=data_promotion_video&no=' + result[i].no + '" class="main-list-photo">';
+						videoHtml += '	<img src="/images/thumbnail_noimage.jpg" alt="'+result[i].title+' 썸네일" title="'+result[i].title+' 썸네일" />';
+						videoHtml += '	</a>';
+						videoHtml += '</div>';
+					}else{
+						videoHtml += '<div class="photo">';
+						videoHtml += '	<a href="/data/promotion.do?gbn=data_promotion_video&no=' + result[i].no + '" class="main-list-photo">';
+						videoHtml += '	<img src="/rest/file/thumbnail/'+result[i].fileId+'/'+result[i].thumbFileNo+'" alt="'+result[i].title+' 썸네일" title="'+result[i].title+' 썸네일" />';
+						videoHtml += '	</a>';
+						videoHtml += '</div>';
+					}					
+					videoHtml += '	<ul class="words">';
+					videoHtml += '  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_video&no='+result[i].no+'"><em>[영상자료]</em>'+ result[i].title +'</a></li>';
+					videoHtml += '      <li>'+result[i].rgsde+'</li>';
+					videoHtml += '	</ul>';
+					videoHtml += '</li>';
+	  		  	}
+				//console.log(videoHtml);
+				$("#movie-slider").html(videoHtml);
+				
+				$("#movie-slider").bxSlider({
+					mode: 'fade',
+			    	ariaHidden:true,
+		            auto: true,
+		            autoControls: true,
+		            stopAutoOnClick: true,
+		            pager: false,
+		            slideWidth: 600
+		        });
+			},
+		    error : function(error) {
+		        console.log("ERROR");
+		    }
+		});
+
+
+    	// 이미지로 보는 복지
+		$.ajax({
+			type : "POST",
+			cache : false,
+			url : "/rest/main/humanbbs",
+			data : JSON.stringify({ "gubun" : "data_promotion_image" }),
+			dataType: "json",
+			contentType :"application/json; charset=UTF-8",
+			success: function(data) {
+				var result = data.resultList;
+
+				var imageHtml = '';
+				for(var i=0; i < result.length; i++){
+					imageHtml += '<li>';					
+					if(result[i].thumbFileNo == ''){
+						imageHtml += '<div class="photo">';
+						imageHtml += '	<a href="/data/promotion.do?gbn=data_promotion_image&no=' + result[i].no + '" class="main-list-photo">';
+						imageHtml += '	<img src="/images/thumbnail_noimage.jpg" alt="'+result[i].title+' 썸네일" title="'+result[i].title+' 썸네일" />';
+						imageHtml += '	</a>';
+						imageHtml += '</div>';
+					}else{
+						imageHtml += '<div class="photo">';
+						imageHtml += '	<a href="/data/promotion.do?gbn=data_promotion_image&no=' + result[i].no + '" class="main-list-photo">';
+						imageHtml += '	<img src="/rest/file/thumbnail/'+result[i].fileId+'/'+result[i].thumbFileNo+'" alt="'+result[i].title+' 썸네일" title="'+result[i].title+' 썸네일" />';
+						imageHtml += '	</a>';
+						imageHtml += '</div>';
+					}					
+					imageHtml += '	<ul class="words">';
+					imageHtml += '  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_image&no='+result[i].no+'"><em>[사진자료]</em>'+ result[i].title +'</a></li>';
+					imageHtml += '      <li>'+result[i].rgsde+'</li>';
+					imageHtml += '	</ul>';
+					imageHtml += '</li>';
+	  		  	}
+				//console.log(imageHtml);
+				$("#img-slider").html(imageHtml);
+				
+				$("#img-slider").bxSlider({
+					mode: 'fade',
+			    	ariaHidden:true,
+		            auto: true,
+		            autoControls: true,
+		            stopAutoOnClick: true,
+		            pager: false,
+		            slideWidth: 600
+		        });
+			},
+		    error : function(error) {
+		        console.log("ERROR");
+		    }
+		});
+
+	}
+
+	function site_link(param){
+		var link_val = $("#"+param).val();
+		if(link_val == "" || link_val == null){
+			switch(param){
+				case "gu":
+					alert("자치구를 선택해주세요.");
+					break;
+				case "instt1":
+					alert("서울시 복지전문기관을 선택해주세요.");
+					break;
+				case "instt2":
+					alert("정부부처기관을 선택해주세요.");
+					break;
+				case "instt3":
+					alert("종합사회복지관을 선택해주세요.");
+					break;
+				case "instt4":
+					alert("노인종합복지관을 선택해주세요.");
+					break;				
+			} 
+			
+		}else{
+			window.open(link_val);
+		}
+	}
+	
+	//바우처택시 추가
+	$(document).ready(function(){
+		$(".main-tabox > ul > li > a").click(function(){
+			var index = $(this).parent().index();
+			$(this).parent().addClass("on").siblings().removeClass("on");
+			$(".main-tabox-list").find(".tabox-child").eq(index).addClass("on").siblings().removeClass("on");
+		});
+	});
+</script>
+<script src="//www.seoul.go.kr/seoulgnb/jquery-1.11.1.min.js"></script><link rel="stylesheet" type="text/css" media="all" href="//www.seoul.go.kr/seoulgnb/seoul-common-gnb.css"><style type="text/css" data-fbcssmodules="css:fb.css.basecss:fb.css.dialog css:fb.css.iframewidget">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .4);bottom:0;left:0;min-height:100%;position:absolute;right:0;top:0;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba), to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:white 0 1px 1px -1px inset;color:#fff;font:bold 14px Helvetica, sans-serif;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2), to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:bold 12px Helvetica, sans-serif;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4a4a4a;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4a4a4a;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}</style></head>
+<body style="">
+<div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function show(){
+	alert('서울시 재난 긴급생활비 지원신청은\n3월30일 부터 가능합니다.');
+}
+</script>
+
+<noscript>자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
+<!-- wrap -->
+<div id="wrap">
+
+    <!-- header start -->
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+function wordSearch() {
+	var kwd = encodeURIComponent(document.getElementById('keyword').value);
+	document.location.href ="/search/list.do?kwd="+kwd;
+}
+
+function map_open(p){
+	var url = "/hope/map.do";
+	if(p != ""){
+		url = url + "?p=" + p;
+	}
+	window.open(url, "map", "screenX=50px, screenY=50px, width=1200px, height=900px, resizable=yes");
+}
+//마우스 우클릭 방지
+/* $("body").contextmenu( function() {
+	return false;
+}); */
+</script>
+    <!-- skip navigation -->
+    <div class="skipnav">
+		<h2 class="blind">반복영역 건너뛰기</h2>
+    	<a href="#content">본문 바로가기</a>
+    	<a href="#gnb">주메뉴 바로가기</a>
+    </div>
+    
+	<!-- 서울 공통 상단 추가 영역  -->
+	<div style="height:40px;">
+		 <!-- 서울 GNB영역 -->
+		<div id="seoul-common-gnb">	<div id="seoul-gnb-plugin" class="white">		<div class="seoul-gnb-holder">			<p class="seoul-gnb-link"><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=logo&amp;link=https://www.seoul.go.kr" target="_blank" title="새창열림" class="seoul-gnb-icon-link wise-link" data-kind="logo">서울특별시</a></p>			<dl class="seoul-gnb-news">				<dt><a href="https://www.seoul.go.kr/realmnews/in/list.do" target="_blank" title="새창열림(서울소식)" class="seoul-gnb-icon-notice">서울소식</a></dt>				<dd><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=hotissue&amp;link=https://news.seoul.go.kr/gov/archives/524755" target="_blank" title="새창열림">처치곤란 아이스팩, 어떡하지?</a></dd>			</dl>			<dl class="seoul-gnb-menu">				<dt>주요메뉴</dt>				<dd><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=seoulnews&amp;link=https://www.seoul.go.kr/realmnews/in/list.do" target="_blank" title="새창열림" class="seoul-gnb-icon-menu1 wise-link" data-kind="seoulnews">서울소식</a></dd>				<dd><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=eungdapso&amp;link=http://eungdapso.seoul.go.kr" target="_blank" title="새창열림" class="seoul-gnb-icon-menu2 wise-link" data-kind="eungdapso">응답소</a></dd>				<dd><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=opengov&amp;link=http://opengov.seoul.go.kr" target="_blank" title="새창열림" class="seoul-gnb-icon-menu3 wise-link" data-kind="opengov">정보공개</a></dd>				<dd>					<button type="button" class="seoul-gnb-icon-menu4">분야별정보</button>					<div class="seoul-gnb-menu-section" style="display: none;">						<dl>							<dt>분야별정보</dt>							<dd>								<ul>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=citybuild&amp;link=http://news.seoul.go.kr/citybuild/" target="_blank" title="새창열림" class="wise-link" data-kind="citybuild">주택</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=economy&amp;link=http://news.seoul.go.kr/economy/" target="_blank" title="새창열림" class="wise-link" data-kind="economy">경제</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=traffic&amp;link=http://news.seoul.go.kr/traffic/" target="_blank" title="새창열림" class="wise-link" data-kind="traffic">교통</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=env&amp;link=http://news.seoul.go.kr/env/" target="_blank" title="새창열림" class="wise-link" data-kind="env">환경</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=welfare&amp;link=http://news.seoul.go.kr/welfare/" target="_blank" title="새창열림" class="wise-link" data-kind="welfare">복지</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=safe&amp;link=http://news.seoul.go.kr/safe/" target="_blank" title="새창열림" class="wise-link" data-kind="safe">안전</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=culture&amp;link=http://news.seoul.go.kr/culture/" target="_blank" title="새창열림" class="wise-link" data-kind="culture">문화</a></li>									<li><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=gov&amp;link=http://news.seoul.go.kr/gov/" target="_blank" title="새창열림" class="wise-link" data-kind="gov">행정</a></li>								</ul>							</dd>						</dl>						<p><a href="//www.seoul.go.kr/sgnb/seoulgnblog.do?gid=G193&amp;kind=allservice&amp;link=https://www.seoul.go.kr/service/all.do" target="_blank" title="새창열림" class="wise-link" data-kind="allservice"><span class="seoul-gnb-icon-service"></span> 서비스 전체보기</a></p>						<button type="button"><span class="seoul-gnb-icon-service-close"></span><span class="hd-element">분야별 정보 닫기</span></button>					</div>				</dd>			</dl>		</div>	</div></div>	
+		<script src="https://www.seoul.go.kr/seoulgnb/gnb.js"></script>
+		<script>
+			// GNB 로딩 스크립트
+			// Yjs.Gnb.init('사이트코드','GNB 표출영역 ID');
+				window.onload = function(){
+					Yjs.Gnb.init('G193','seoul-common-gnb');
+				};
+		</script>
+		<!-- 서울 GNB영역 -->	
+	</div>
+	
+    <div id="hd" class="main">
+		<div class="container cfix">
+			<!-- logo -->
+			<h1><a href="/main.do"><img src="/images/common/logo.png" alt="서울복지포털"></a></h1>
+			<!-- gnb start -->
+			<div id="gnb">
+				<h2 class="blind">주메뉴</h2>
+				<button type="button" class="gnb_open on"><span>주메뉴 열기</span></button>
+				<!-- gnb 1 depth -->
+				<ul class="depth1 cfix">
+					<li>
+						<a href="/handicap/life/taxiRegInfo.do">서울 복지</a>
+						<!--반응형용--><button type="button">서울 복지 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li>
+								<a href="/handicap/life/taxiRegInfo.do">복지서비스 신청</a>
+								<!--반응형용--><button type="button">복지서비스 신청<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/life/taxiRegInfo.do">바우처택시 온라인신청</a></li>
+									<li><a href="/handicap/life/specialProvision.do">장애인특별공급알리미 신청</a></li>
+								</ul>
+							</li>
+							<li><a href="/hope/policyGoal.do">서울 복지정책 목표</a></li>
+							<li><a href="/hope/welfareFuture.do">서울형 복지</a></li>
+							<li>
+								<a href="/hope/center/guide.do">돌봄SOS센터</a>
+								<!--반응형용--><button type="button">돌봄SOS센터<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/center/guide.do">돌봄SOS센터 사업 안내</a></li>
+									<li><a href="/hope/center/vision.do">돌봄SOS센터 비전 목표</a></li>
+									<li><a href="/hope/center/service.do">서비스 제공 대상기준</a></li>
+									<li><a href="/hope/center/formation.do">서비스 구성</a></li>
+									<li><a href="/hope/center/contents.do">서비스별 세부 내용</a></li>
+								</ul>
+							</li>
+							<li><a href="/hope/careSearch.do">돌봄 맞춤검색</a></li>
+							<li>
+								<a href="/hope/care/crisis.do">지역중심의 돌봄체계</a>
+								<!--반응형용--><button type="button">지역중심의 돌봄체계<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/care/crisis.do">위기가정 지원</a></li>
+									<li><a href="/hope/care/relation.do">사회관계 형성 지원</a></li>
+									<li><a href="/hope/societyService.do">지역사회서비스</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/hope/service/public/basicguarantee.do">공적지원사업</a>
+								<!--반응형용--><button type="button">공적지원사업<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/service/public/basicguarantee.do">기초보장제도</a></li>
+									<li><a href="/hope/service/public/welfaresupport.do">긴급복지지원제도</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/hope/service/private/care.do">민간지원사업</a>
+								<!--반응형용--><button type="button">민간지원사업<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/service/private/care.do">우리동네 돌봄단</a></li>
+									<li><a href="/hope/service/private/selfsupport.do">저소득층 자립지원</a></li>
+									<li><a href="/hope/service/private/cooperation.do">민간협력</a></li>
+								</ul>
+							</li>
+							<li><a href="/hope/patriot.do">보훈복지</a></li>
+							<li><a href="javascript:;" onclick="map_open('');">서울시 복지지도</a></li>
+							<li><a href="/hope/customizedSearch.do">맞춤지역시설검색</a></li>
+							<li>
+								<a href="/news/welfareNews.do">새소식</a>
+								<!--반응형용--><button type="button">새소식<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/news/welfareNews.do">복지 새소식</a></li>
+									<li><a href="/news/welfareNewsCenter.do">복지관 새소식</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/data/policy.do?menu=data_policy">자료실</a>
+								<!--반응형용--><button type="button">자료실<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/data/policy.do?menu=data_policy">정책자료실</a></li>
+									<li><a href="/data/promotion.do">홍보자료실</a></li>
+									<li><a href="/data/education.do">교육자료실</a></li>
+									<li><a href="http://love.seoul.go.kr/asp/yearList.asp" target="_blank">서울사랑</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="/human/goal.do">찾아가는 동주민센터</a>
+						<!--반응형용--><button type="button">찾아가는 동주민센터 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li><a href="/human/goal.do">비전 및 목표</a></li>
+							<li><a href="/human/bi.do">BI</a></li>
+							<li><a href="/human/system.do">추진체계</a></li>
+							<li>
+								<a href="/human/visit/decision.do">찾동 2.0</a>
+								<!--반응형용--><button type="button">찾동 2.0<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/human/visit/decision.do">지역주민에 대한 주민결정권 강화</a></li>
+									<li><a href="/human/visit/assurance.do">지역 사회보장체계 강화</a></li>
+									<li><a href="/human/visit/system.do">합해서 더 강해지는 통합적 운영체계</a></li>
+									<li><a href="/human/visit/base.do">추진기반 강화</a></li>
+								</ul>
+							</li>
+							<li><a href="/human/situation.do">운영현황</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="/senior/policy.do">어르신복지</a>
+						<!--반응형용--><button type="button">어르신복지 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li><a href="/senior/policy.do">어르신 복지혁신</a></li>
+							<li><a href="/senior/service/life.do">생활지원</a></li>
+							<li><a href="/senior/service/care.do">돌봄</a></li>
+							<li><a href="/senior/service/certify.do">서울형 어르신돌봄시설</a></li>
+							<li><a href="/senior/service/rest.do">요양</a></li>
+							<li><a href="/senior/service/funeral.do">장사시설</a></li>
+							<li>
+								<a href="/hope/customizedSearch.do?gbn=senior_medicalWelfareFacility">의료시설</a>
+								<!--반응형용--><button type="button">의료시설<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/customizedSearch.do?gbn=senior_medicalWelfareFacility">어르신 의료복지시설</a></li>
+									<li><a href="https://health.seoulmc.or.kr/hospitalClinicInfo/medicalCareInfo.do" target="_blank">요양기관정보검색</a></li>
+									<li><a href="https://blutouch.net/index.asp" target="_blank">정신건강 복지센터</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/senior/service/leisure.do">여가시설</a>
+								<!--반응형용--><button type="button">여가시설<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/senior/service/leisure.do">노인복지관 운영</a></li>
+									<li><a href="/middleage/seniorCitizen.do">경로당 운영지원</a></li>
+								</ul>
+							</li>
+							<li><a href="/hope/customizedSearch.do?gbn=senior_communityCentre">노인복지관 검색</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="/middleage/policy.do">중장년복지</a>
+						<!--반응형용--><button type="button">중장년복지 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li><a href="/middleage/policy.do">중장년 지원계획</a></li>
+							<li><a href="/middleage/service.do">50플러스 지원사업</a></li>
+							<li><a href="/middleage/work.do">일과 참여</a></li>
+							<li><a href="/middleage/culture.do">문화생활</a></li>
+							<li><a href="/middleage/learning.do">배움</a></li>
+							<li><a href="https://50plus.or.kr/" target="_blank">50+포털 바로가기</a></li>							
+						</ul>
+					</li>
+					<li>
+						<a href="/handicap/happySeoul.do">장애인복지</a>
+						<!--반응형용--><button type="button">장애인복지 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li><a href="/handicap/happySeoul.do">장애인 행복한 서울</a></li>
+							<li>
+								<a href="/handicap/registProc.do">장애인 등록안내</a>
+								<!--반응형용--><button type="button">장애인 등록안내<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/registProc.do">장애인등록절차</a></li>
+									<li><a href="/handicap/cardIssue.do">복지카드발급</a></li>
+									<li><a href="/handicap/policy.do">장애인 정의/등록현황</a></li>
+								</ul>
+							</li>
+							<li><a href="/handicap/findWelfareService.do">장애인복지 맞춤조회</a></li>
+							<li>
+								<a href="/handicap/tour/route.do">관광정보</a>
+								<!--반응형용--><button type="button">관광정보<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/tour/route.do">무장애관광코스</a></li>
+									<li><a href="/handicap/tour/tourguide.do">장애인관광안내</a></li>
+									<li><a href="/handicap/tour/attraction.do">관광지</a></li>
+									<li><a href="/handicap/tour/accommodations.do">숙박</a></li>
+									<li><a href="/handicap/tour/restaurant.do">음식점</a></li>
+									<li><a href="/handicap/tour/convenient.do">편의시설</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/handicap/life/certificate.do">생활정보</a>
+								<!--반응형용--><button type="button">생활정보<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/life/certificate.do">서울형 장애물없는 건물인증제</a></li>
+									<li><a href="http://www.seoulmetro.co.kr/kr/page.do?menuIdx=366" target="_blank">지하철 편의시설</a></li>
+									<li><a href="/handicap/life/taxiRegInfo.do">서울시 바우처택시운영</a></li>
+									<li><a href="/handicap/life/livingSafety.do">시각장애인 생활안전서비스</a></li>
+									<li><a href="/handicap/life/center.do">지원센터</a></li>
+									<li><a href="/handicap/life/specialProvision.do">특별공급 문자알리미 서비스</a></li>
+									<li><a href="http://love.seoul.go.kr/asp/yearList.asp" target="_blank">서울사랑</a></li>
+									<li><a href="/handicap/life/plaza.do">어울림플라자</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/handicap/job/center.do">장애인일자리 안내</a>
+								<!--반응형용--><button type="button">장애인일자리 안내<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/job/center.do">장애인일자리통합지원센터</a></li>
+									<li><a href="/handicap/job/rehabilitation.do">직업재활시설</a></li>
+									<li><a href="/handicap/job/career.do">커리어플러스센터</a></li>
+									<li><a href="/handicap/job/happyCenter.do">행복플러스발달장애인센터</a></li>
+									<li><a href="/handicap/job/happyShop.do">행복플러스가게</a></li>
+									<li><a href="/handicap/job/supportBsns.do">장애인공공일자리 지원사업</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/handicap/understand/etiquette.do">장애 이해하기</a>
+								<!--반응형용--><button type="button">장애 이해하기<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/handicap/understand/etiquette.do">장애인 에티켓</a></li>
+									<li><a href="/data/promotion.do?gbn=handicap_understand_video">장애인 인식개선 동영상</a></li>
+									<li><a href="/handicap/understand/signLanguage.do">수어 일러두기</a></li>
+									<li><a href="/handicap/understand/signLanguageDictionary.do">수어 표준사전</a></li>
+									<li><a href="/handicap/understand/brailleDictionary.do">점자 표준사전</a></li>
+									<li><a href="/handicap/understand/regulations.do">법규</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/handicap/deinstitution/vision.do">서울시 장애인 탈시설화 정책</a>
+								<!--반응형용--><button type="button">서울시 장애인 탈시설화 정책<span> 메뉴 열고닫기</span></button>
+								<ul class="depth3">
+									<li><a href="handicap/deinstitution/vision.do">정책 비전 및 목표</a></li>
+									<li><a href="/handicap/deinstitution/result.do">장애인 탈시설화 정책 추진 성과</a></li>
+									<li><a href="/handicap/deinstitution/business.do">탈시설 정책 주요 사업</a></li>
+									<li><a href="/handicap/deinstitution/promote.do">탈시설화 정책 홍보</a></li>
+								</ul>
+							</li>
+							<li><a href="/hope/customizedSearch.do?gbn=handicap_disableWelfareFacility">장애인 복지시설 검색</a></li>
+							<li><a href="/handicap/humanRight.do">장애인인권</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="/homeless/policy.do">노숙인·자활복지</a>
+						<!--반응형용--><button type="button">노숙인·자활복지 <span>메뉴 열고닫기</span></button>
+						<!-- gnb 2 depth -->
+						<ul class="depth2" style="height: 356px;">
+							<li><a href="/homeless/policy.do">노숙인 쪽방 주민보호</a></li>
+							<li><a href="/homeless/service.do">자활복지 운영사업</a></li>
+							<li><a href="/homeless/support.do">노숙인&nbsp;희망길잡이</a></li>
+							<li>
+								<a href="/homeless/protect.do">자활지원&nbsp;상담신청</a>
+								<!--반응형용--><button type="button">자활지원&nbsp;상담신청<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/homeless/protect.do">거리노숙인 보호 강화</a></li>
+									<li><a href="http://www.homelesskr.org/index.asp" target="_blank">다시서기 종합지원센터</a></li>
+									<li><a href="http://www.dropin.or.kr/" target="_blank">브릿지 종합지원센터</a></li>
+									<li><a href="http://www.bohyeon.net" target="_blank">영등포보현종합지원센터</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="/hope/customizedSearch.do?gbn=homeless_facility_homeLess">자활복지시설</a>
+								<!--반응형용--><button type="button">자활복지시설<span> 메뉴 열고닫기</span></button>
+								<!-- gnb 3 depth -->
+								<ul class="depth3">
+									<li><a href="/hope/customizedSearch.do?gbn=homeless_facility_homeLess">노숙인 시설</a></li>
+									<li><a href="/hope/customizedSearch.do?gbn=homeless_facility_dossHouse">쪽방상담소</a></li>
+									<li><a href="/hope/customizedSearch.do?gbn=homeless_facility_soupKichen">무료급식소</a></li>
+									<li><a href="/hope/customizedSearch.do?gbn=homeless_facility_selfSupport">자활시설</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<button type="button" class="gnb_close"><span>주메뉴 닫기</span></button>
+			</div>
+			<!-- gnb end -->
+			<!-- tnb start -->
+			<div class="tnb">
+				<!-- search start -->
+				<div class="search_wrap">
+					<form id="topUserdVO" action="/" method="post">
+						<input id="keyword" name="keyword" type="text" title="검색어를 입력해주세요" class="sch_open" required="">
+						<button type="submit" onclick="wordSearch(); return false;" class="btn btn_sch">검색하기</button>
+					</form>
+				</div>
+				<!-- search end -->
+				<!-- sitemap link -->
+				<a href="/sitemap/list.do" class="btn btn_smap"><span>사이트맵 바로가기</span></a>
+				<a href="javascript:;" onclick="$('#main-popup').show();" class="top-hold" title="안내 팝업 보여주기"><img src="/images/main/top_bc.gif" alt="안내 팝업 보여주기 아이콘"></a>
+			</div>
+			<!-- tnb end -->
+		</div>
+		<!--gnb bg-->
+		<span class="gnb_bg" style="height: 356px;"></span>
+		<span class="gnb_bg_m"></span>
+    </div>
+	<!-- header end -->
+	<!-- layerpop -->
+	<div id="layerpop">
+		
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+	// 공지사항 팝업
+	openLayer('notice_popup',{top:150, left:200}, new Date("2020/11/24 09:00:00"), new Date("2020/12/04 23:59:59"), "notice_190321" ); 
+	openLayer('notice_popup2',{top:150, left:100}, new Date("2020/05/14 09:00:00"), new Date("2020/09/25 23:59:59"), "notice_170621" ); 
+	openLayer('notice_popup3',{top:100, left:200}, new Date("2021/01/11 12:00:00"), new Date("2021/02/10 23:59:59"), "notice_20200326" );
+	
+	$(document.noticeform.Notice).click(function(){
+		$('#notice_popup').hide();
+		setCookie("notice_190321", "1" , 1);	// 쿠키추가
+	});
+	$(document.noticeform2.Notice).click(function(){
+		$('#notice_popup2').hide();
+		setCookie("notice_170621", "1" , 1);	// 쿠키추가
+	});
+	$(document.noticeform3.Notice).click(function(){
+		$('#notice_popup3').hide();
+		setCookie("notice_20200326", "1" , 1);	// 쿠키추가
+	});
+	//window.open("https://www.zeropay.or.kr/popZeroPay.html","","width=800, height=1050,top=100,left=100,location=no,status=no,scrollbars=yes");
+});
+//쿠키값 추출 (쿠키명)
+function getCookie( cookieName ) {
+ 	var search = cookieName + "=";
+ 	var cookie = document.cookie;
+
+ 	// 현재 쿠키가 존재할 경우
+ 	if( cookie.length > 0 ) {
+  		startIndex = cookie.indexOf( cookieName );	// 해당 쿠키명이 존재하는지 검색한 후 존재하면 위치를 리턴.
+
+  		// 만약 존재한다면
+  		if( startIndex != -1 ) {
+   			startIndex += cookieName.length;	// 값을 얻어내기 위해 시작 인덱스 조절   			
+   			endIndex = cookie.indexOf( ";", startIndex );	// 값을 얻어내기 위해 종료 인덱스 추출
+
+   			if( endIndex == -1) endIndex = cookie.length;	// 만약 종료 인덱스를 못찾게 되면 쿠키 전체길이로 설정	
+
+   			return unescape( cookie.substring( startIndex + 1, endIndex ) );	// 쿠키값을 추출하여 리턴
+   			
+  		} else { // 쿠키 내에 해당 쿠키가 존재하지 않을 경우
+   			return false;
+  		}
+ 	} else { // 쿠키 자체가 없을 경우
+  		return false;
+ 	}
+}
+
+// 쿠키추가 (쿠키명, 쿠키값, 만료일수)
+function setCookie( cookieName, cookieValue, expireDate ) {
+	var today = new Date();
+	today.setDate( today.getDate() + parseInt( expireDate ) );
+	document.cookie = cookieName + "=" + escape( cookieValue ) + "; path=/; expires=" + today.toGMTString() + ";";
+}
+
+//팝업 open (팝업ID, 위치옵션, 게시시작일, 게시종료일, 쿠키명)
+function openLayer(targetID, options, sDate, eDate, cookieNm){
+	
+	// 게시일 체크
+	if (!Date.now) {	// IE8버전이하
+		if(!(new Date().valueOf() >= sDate && new Date().valueOf() <= eDate))
+			return;
+	}else{
+		if(!(Date.now() >= sDate && Date.now() <= eDate))
+			return;	
+	}
+
+	// 쿠키 체크 (오늘하루그만보기 체크)
+	if(cookieNm != undefined)
+		if(getCookie(cookieNm) == "1")
+			return;
+
+	var $layer = $('#'+targetID);
+	var $close = $layer.find('.close');
+	var width = $layer.outerWidth();
+	var ypos = options.top;
+	var xpos = options.left;
+	var marginLeft = 0;
+	
+	if(xpos==undefined){
+		xpos = '50%';
+		marginLeft = -(width/2);
+	}
+
+	if(!$layer.is(':visible')){
+		$layer.css({'top':ypos+'px','left':xpos,'margin-left':marginLeft})
+			.show();
+	}
+
+	$close.bind('click',function(){
+		if($layer.is(':visible')){
+			$layer.hide();
+			
+			// 오늘하루그만보기 체크할 경우
+			if(document.noticeform.Notice.checked){	
+				setCookie(cookieNm, "1" , 1);	// 쿠키추가
+			}
+			
+			// 오늘하루그만보기 체크할 경우
+			if(document.noticeform2.Notice.checked){	
+				setCookie(cookieNm, "1" , 1);	// 쿠키추가
+			}
+			
+			// 오늘하루그만보기 체크할 경우
+			if(document.noticeform3.Notice.checked){	
+				setCookie(cookieNm, "1" , 1);	// 쿠키추가
+			}
+		}
+		return false;
+	});
+}
+</script>
+
+	<form id="noticeform" name="noticeform" method="POST">
+		<div id="notice_popup" class="layer-popup redPop" style="width:592px;z-index:99991;">
+			<div>
+				<a href="https://promotion.daum-kg.net/2020seoulnews/" title="서울의 코로나 10대 뉴스 투표하기" target="_blank"><img src="/images/main/pop/pop11.png" alt="참! 고마운 서울시민과 함께하는 서울의 코로나 10대 뉴스 - 참! 고마운 서울시민과 함께하는 서울의 코로나 10대 뉴스 이벤트가 진행되고 있습니다. 서울시 복지정책실의 시책사업도 후보로 두가지가 선정되었습니다. 10대 뉴스 선정 투표에 참여하시고, 이벤트 당첨 선물도 받아가시기 바랍니다. 투표하기" height="371"></a>
+			</div>
+			<div class="pop_bot">
+				<input type="checkbox" class="mr5 type_checkbox" name="Notice" title="오늘하루 그만보기">오늘 하루 그만 보기&nbsp;
+				<a href="#" class="close">[닫기]&nbsp;</a>
+			</div>	
+		</div>
+	</form>
+	
+	<form id="noticeform2" name="noticeform2" method="POST">
+		<div id="notice_popup2" class="add-nopobup">
+			<div class="con">
+				<div class="tit">
+					서울시 외국인주민<br><span>재난긴급생활비</span> 신청<br>
+					<p>(How to apply for Emergency Disaster Relief Funds for Foreign Residents)</p>
+				</div>
+				<ul class="list_dot_t2">
+					<li>신청기간(Application period) : <br>2020.08.31. 09:00 ~ 2020.09.25. 17:00</li>
+					<li>
+						지원대상(Eligiblity) : <br>기준일 현재 서울특별시에 외국인 등록 또는 거소 신고를 한지 90일을 초과하고, 가구소득이 중위소득 100%이하이며, 취업.영리활동이 가능한 가구<br>
+						Registered Foreign Residents who have an official record of income.<br>
+						* Support is available to person less than the median income.
+					</li>
+					<li>신청사이트 바로가기 : <a href="http://fds.seoul.go.kr" target="_blank" title="신청사이트 바로가기 - 새창"><u>http://fds.seoul.go.kr</u></a></li>
+				</ul>
+				<p class="mt10 ml20"><a href="https://wis.eseoul.go.kr/rest/file/download/9bf47d9288714299a52d250f921b486f/1" class="download" title="외국인 재난긴급생활비 지원 신청서 등 다운받기">[외국인 재난긴급생활비 지원 신청서 등]</a></p>
+			</div>
+			<div class="pop_bot">
+				<input type="checkbox" class="mr5 type_checkbox" name="Notice" title="오늘하루 그만보기">오늘 하루 그만 보기&nbsp;
+				<a href="#" class="close">[닫기]&nbsp;</a>
+			</div>
+		</div>
+	</form>
+	
+	<form id="noticeform3" name="noticeform3" method="POST">
+		<div id="notice_popup3" class="layer-popup redPop" style="z-index:999999;">
+			<div class="pop_top">
+				<img src="/images/main/pop/pop_logo.png" alt="서울특별시">
+				<img src="/images/main/pop/pop_seoul.png" alt="너와나의서울" style="float:right; padding-top:.3em;">
+			</div>
+			<div class="pop_main" style="text-align:center; padding:1em;">
+				<h3><span>[서울형 기초보장제도 지원 확대(’21.1월부터)]</span></h3>
+				<div class="pop_cont01">					
+					<div class="txtHd mt5">
+						<ul>
+							<li>◆ 소득기준 완화 : 중위소득 43%이하 → 45%이하</li>
+							<li>◆ 노인과 한부모가구 부양의무자 기준 폐지<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(국민기초생활보장제도 동일 시행)</li>
+							<li>※ <a href="/hope/service/public/basicguarantee.do?tab=2" title="서울형 기초보장제도 자세히 보기" style="text-decoration:underline;">자세히 보기</a></li>
+						</ul>
+					</div>
+					<p class="txtHd mt25">
+					※서울형 기초보장제도란?<br>
+					국민기초생활보장 수급자 기준에 부합하지 않아 정부 지원을 받지 못하는 생활이 어려운 서울시민에게 전보다 완화된 기준을 적용하여 생계급여 등을 지원하는 서울형 기초생활보장제도입니다.
+					</p>
+				</div>
+			</div>
+			<div class="pop_bot">
+				<input type="checkbox" class="mr5 type_checkbox" name="Notice" title="오늘하루 그만보기">오늘 하루 그만 보기&nbsp;
+				<a href="#" class="close">[닫기]&nbsp;</a>
+			</div>		
+		</div>
+	</form>	
+	</div>
+	<!-- layerpop -->
+    <!-- main start -->
+ 	<div class="main-wraper">
+		<div id="content" class="main-contener">
+			<div id="main-1floor">
+				<div class="main-1floor cfix">
+					<div class="main-icon">
+						<div class="main-title bg1"><strong>서울복지서비스</strong><br>바로가기</div>
+						<ul class="cfix">
+							<li><a href="/handicap/life/specialProvision.do"><span><img src="/images/main/main_bg4.png" alt="장애인 특별공급"></span>장애인 특별공급</a></li>
+							<li><a href="/handicap/life/taxiRegInfo.do"><span><img src="/images/main/addmain_bg15.png" alt="장애인 바우처택시"></span>장애인 바우처택시</a></li>							
+							<li class="addstyle"><a href="https://seoul.chest.or.kr/bridgelink.do?pBranchCd=002&amp;bhfCode=002&amp;_mid=00_00_00&amp;_murl=L2NhL3NwZWNsbXlzL2luaXRTcGVjbG15c0RldGFpbC5kbz9teXNzcGVjbGVTbj0yOA==" target="_blank"><span><img src="/images/main/addmain_bg12.png" alt="취약계층을 위한 기부캠페인"></span>취약계층을 위한<br>기부캠페인</a></li>  
+							<li><a href="/hope/societyService.do"><span><img src="/images/main/addmain_bg14.png" alt="지역사회서비스"></span>지역사회서비스</a></li>
+							<li><a href="/hope/service/public/welfaresupport.do"><span><img src="/images/main/addmain_bg13.png" alt="나만의 긴급복지지원제도"></span>긴급복지지원제도</a></li>
+							<li><a href="/hope/center/guide.do"><span><img src="/images/main/main_bg9.png" alt="돌봄 SOS 센터"></span>돌봄 SOS 센터 </a></li>
+						</ul>
+					</div>
+					<div class="main-slider">
+						<div class="bx-wrapper" style="max-width: 100%;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 445px;"><div class="m_bxslider" style="width: auto; position: relative;">
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/hope/care/crisis.do"><img src="/images/main/main_1slider7_1.jpg" alt="어려운 이웃 찾는 착한탐정이 되어주세요! 당신의 작은 관심이 생명을 구할 수 있습니다 (신고02-120) 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/hope/policyGoal.do"><img src="/images/main/main_1slider1.jpg" alt="서울복지구현 사람중심의 촘촘한 복지시정으로 삶의 질을 개선 합니다. 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/human/goal.do"><img src="/images/main/main_1slider2.jpg" alt="찾동이란? 복지가 필요한 곳에 동주민센터가 찾아갑니다. 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/senior/policy.do"><img src="/images/main/main_1slider3.jpg" alt="어르신복지 혁신! 어르신의 행복한 노년을 위해 인생이모작 도시를 위해 노력합니다. 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/middleage/service.do"><img src="/images/main/main_1slider4_1.jpg" alt="중장년지원! 중장년의 가슴뛰는 내일을 응원합니다. 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: none; z-index: 0; width: 437px;"><a href="/handicap/registProc.do"><img src="/images/main/main_1slider5_1.jpg" alt="장애인등록방법! 장애인복지 지원을 받아야 하는데 방법을 모르시나요? 자세히보기"></a></div>
+							<div style="float: none; list-style: none; position: absolute; display: block; z-index: 50; width: 437px;"><a href="/homeless/policy.do"><img src="/images/main/main_1slider6.jpg" alt="자활지원계획! 노숙인의 사회복귀와 자립을 지원합니다. 자세히보기"></a></div>
+						</div></div><div class="bx-controls bx-has-pager bx-has-controls-direction bx-has-controls-auto"><div class="bx-pager bx-default-pager"><div class="bx-pager-item"><a href="" data-slide-index="0" class="bx-pager-link">1</a></div><div class="bx-pager-item"><a href="" data-slide-index="1" class="bx-pager-link">2</a></div><div class="bx-pager-item"><a href="" data-slide-index="2" class="bx-pager-link">3</a></div><div class="bx-pager-item"><a href="" data-slide-index="3" class="bx-pager-link">4</a></div><div class="bx-pager-item"><a href="" data-slide-index="4" class="bx-pager-link">5</a></div><div class="bx-pager-item"><a href="" data-slide-index="5" class="bx-pager-link">6</a></div><div class="bx-pager-item"><a href="" data-slide-index="6" class="bx-pager-link active">7</a></div></div><div class="bx-controls-direction"><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div><div class="bx-controls-auto"><div class="bx-controls-auto-item"><a class="bx-start active" href="">Start</a></div><div class="bx-controls-auto-item"><a class="bx-stop" href="">Stop</a></div></div></div></div>
+					</div>
+					<script>
+						$(document).ready(function(){
+							// main slider 191204
+						  $('.main-slider .m_bxslider').bxSlider({
+							  mode: 'fade',
+							  auto: true,
+							  autoControls: true,
+							  pause: 30000,
+							  stopAutoOnClick: true,
+							  pager: true,
+							  ariaHidden:true
+						  });
+						});
+					</script>
+					<div class="floor1-right">
+						<div class="main-radio">
+							<div class="main-title bg2">서울복지서비스<br><strong>맞춤검색</strong></div>
+							<form name="searchForm" id="searchForm" method="post">
+							<div class="about-28px">
+								<div class="radio-list">
+									<ul class="cfix">
+										<li>
+											<input type="radio" name="main_radio" id="main-radio1" value="2" onclick="change_gubun('1');">
+											<label class="tap1 on" for="main-radio1">장애인지원</label>
+										</li>
+										<li>
+											<input type="radio" name="main_radio" id="main-radio2" value="1" onclick="change_gubun('2');">
+											<label class="tap2" for="main-radio2">돌봄</label>
+										</li>
+										<li>
+											<input type="radio" name="main_radio" id="main-radio3" value="3" onclick="change_gubun('3');">
+											<label class="tap3" for="main-radio3">복지시설</label>
+										</li>
+									</ul>
+								</div>
+								<div class="select-list tap1-con on" id="tab1">
+									<ul class="cfix">
+										<li>
+                                            <select name="age" id="age" title="출생연도" style="height:40px; font-size:15px;">
+												<option value="all" selected="selected">출생연도 선택</option>
+											<option value="65">1956년 이전</option><option value="65">1956</option><option value="64">1957</option><option value="63">1958</option><option value="62">1959</option><option value="61">1960</option><option value="60">1961</option><option value="59">1962</option><option value="58">1963</option><option value="57">1964</option><option value="56">1965</option><option value="55">1966</option><option value="54">1967</option><option value="53">1968</option><option value="52">1969</option><option value="51">1970</option><option value="50">1971</option><option value="49">1972</option><option value="48">1973</option><option value="47">1974</option><option value="46">1975</option><option value="45">1976</option><option value="44">1977</option><option value="43">1978</option><option value="42">1979</option><option value="41">1980</option><option value="40">1981</option><option value="39">1982</option><option value="38">1983</option><option value="37">1984</option><option value="36">1985</option><option value="35">1986</option><option value="34">1987</option><option value="33">1988</option><option value="32">1989</option><option value="31">1990</option><option value="30">1991</option><option value="29">1992</option><option value="28">1993</option><option value="27">1994</option><option value="26">1995</option><option value="25">1996</option><option value="24">1997</option><option value="23">1998</option><option value="22">1999</option><option value="21">2000</option><option value="20">2001</option><option value="19">2002</option><option value="18">2003</option><option value="17">2004</option><option value="16">2005</option><option value="15">2006</option><option value="14">2007</option><option value="13">2008</option><option value="12">2009</option><option value="11">2010</option><option value="10">2011</option><option value="9">2012</option><option value="8">2013</option><option value="7">2014</option><option value="6">2015</option><option value="5">2016</option><option value="4">2017</option><option value="3">2018</option><option value="2">2019</option><option value="1">2020</option><option value="0">2021</option></select>
+										</li>
+										<li>
+                                            <select id="sex" name="sex" title="성별 선택" style="height:40px; font-size:15px;">
+                                                <option value="all" selected="selected">성별 선택</option>
+												<option value="M">남</option>
+												<option value="F">여</option>
+                                            </select>										
+										</li>
+										<li>
+                                            <select id="rating" name="rating" title="장애정도 선택" style="height:40px; font-size:15px;">
+                                                <option value="">장애정도 선택</option>
+                                                <option value="Y">심한 장애</option>
+                                                <option value="N">심하지 않은 장애</option>
+                                            </select>										
+										</li>
+										<li>
+                                            <select id="disability" name="disability" title="장애 종류 선택" style="height:40px; font-size:15px;">
+                                                
+                                            <option value="all">장애유형 선택</option><option value="ha">지체</option><option value="br">뇌병변</option><option value="vi">시각</option><option value="he">청각</option><option value="sp">언어</option><option value="in">지적</option><option value="ja">자폐성</option><option value="me">정신</option><option value="ki">신장</option><option value="hea">심장</option><option value="re">호흡기</option><option value="hep">간</option><option value="fa">안면</option><option value="os">장루/요루</option><option value="ep">뇌전증</option></select>										
+										</li>										
+										<li>
+                                            <select name="income" title="소득기준 선택" style="height:40px; font-size:15px;">		
+												<option value="all" selected="selected">소득기준 선택</option>
+												<option value="01">기초생활수급자</option>
+												<option value="02">차상위계층</option>
+												<option value="03">중위소득 50%초과~120%이하</option>
+												<option value="04">중위소득 120%초과~180%이하</option>
+												<option value="05">기준없음</option>																		
+											</select>
+										</li>
+										<li>
+                                            <select name="household" id="household" title="가구기준 선택" style="height:40px; font-size:15px;">
+												<option value="all" selected="selected">가구기준 선택</option>
+												<option value="1">독거 한정</option>
+												<option value="2">비독거 한정</option>										
+											</select>
+										</li>
+										<li>
+                                            <select name="bsnsArea" id="bsnsArea" title="사업수혜지역 선택" style="height:40px; font-size:15px;">
+												<option value="all" selected="selected">사업수혜지역 선택</option>
+												<option value="S">서울시 한정</option>
+												<option value="A">전국</option>										
+											</select>
+										</li>
+									</ul>								
+								</div>
+								<div class="select-list tap2-con" id="tab2">
+									<ul class="cfix">
+										<li>
+											<select name="age2" id="age2" title="연령별 선택">
+												<option value="all">연령별 전체</option>
+												<option value="A">5세 미만</option>
+												<option value="B">18세 미만</option>
+												<option value="C">18~34세</option>
+												<option value="D">35~64세</option>
+												<option value="E">65세 이상</option>
+											</select>										
+										</li>
+										<li>
+											<select name="disabled" id="disabled" title="개인별여건 선택">
+												<option value="all">개인별여건 전체</option>
+												<option value="A">일반</option>
+												<option value="B">질병/요양/치매</option>
+												<option value="C">여성/아동/청소년/외국인</option>
+												<option value="D">보훈대상</option>
+											</select>										
+										</li>
+										<li>
+											<select name="income" id="income" title="소득수준 선택">
+												<option value="all">소득수준 전체</option>
+												<option value="A">일반</option>
+												<option value="B">저소득</option>
+											</select>										
+										</li>
+									</ul>
+								</div>
+								<div class="select-list tap3-con" id="tab3">
+									<ul class="only cfix">
+										<li><select name="schAtdrcCd" id="schAtdrcCd" title="복지시설 지역선택"><option value="">복지시설 지역선택</option><option value="">전체</option><option value="11110">종로구</option><option value="11140">중구</option><option value="11170">용산구</option><option value="11200">성동구</option><option value="11215">광진구</option><option value="11230">동대문구</option><option value="11260">중랑구</option><option value="11290">성북구</option><option value="11305">강북구</option><option value="11320">도봉구</option><option value="11350">노원구</option><option value="11380">은평구</option><option value="11410">서대문구</option><option value="11440">마포구</option><option value="11470">양천구</option><option value="11500">강서구</option><option value="11530">구로구</option><option value="11545">금천구</option><option value="11560">영등포구</option><option value="11590">동작구</option><option value="11620">관악구</option><option value="11650">서초구</option><option value="11680">강남구</option><option value="11710">송파구</option><option value="11740">강동구</option></select></li>
+										<li><select name="fcltyKind" id="fcltyKind" title="복지시설 종류선택"><option value="">복지시설 종류선택</option><option value="1209">(건강) 건강기타</option><option value="1701">(건강가정) 건강가정지원센터</option><option value="0801">(결핵한센인) 결핵한센시설</option><option value="1901">(기타) 기타시설</option><option value="0509">(노숙인등) 노숙인등기타</option><option value="0501">(노숙인등) 노숙인등생활시설</option><option value="0502">(노숙인등) 노숙인등이용시설</option><option value="0109">(노인) 노인기타</option><option value="0105">(노인) 노인보호전문기관</option><option value="0103">(노인) 노인여가복지시설</option><option value="0102">(노인) 노인의료복지시설</option><option value="0107">(노인) 노인일자리지원기관</option><option value="0101">(노인) 노인주거복지시설</option><option value="0104">(노인) 재가노인복지시설</option><option value="1409">(다문화가족) 다문화가족기타</option><option value="1401">(다문화가족) 다문화가족복지시설</option><option value="0209">(아동) 아동기타</option><option value="0201">(아동) 아동복지시설</option><option value="1009">(여성) 여성기타</option><option value="1101">(영유아) 보육시설</option><option value="1109">(영유아) 영유아기타</option><option value="0601">(일반) 일반사회복지시설</option><option value="0301">(장애인) 장애인거주시설</option><option value="0309">(장애인) 장애인기타</option><option value="0305">(장애인) 장애인생산품판매시설</option><option value="0304">(장애인) 장애인의료재활시설</option><option value="0302">(장애인) 장애인지역사회재활시설</option><option value="0303">(장애인) 장애인직업재활시설</option><option value="0701">(저소득) 자활시설</option><option value="0409">(정신보건) 정신보건기타</option><option value="0402">(정신보건) 정신요양시설</option><option value="0403">(정신보건) 정신재활시설</option><option value="1302">(청소년) 청소년복지시설</option><option value="0909">(한부모가족) 한부모가족기타</option><option value="0901">(한부모가족) 한부모가족복지시설</option></select></li>
+									</ul>
+								</div>
+								<a class="search-button" href="javascript:;" onclick="go_search();" id="searchBtn"><span>검색하기</span></a>
+								<input type="hidden" id="signguNm" name="signguNm" value="">
+								<input type="hidden" id="gubun" name="gubun" value="1">
+							</div>
+							</form>
+						</div>
+						<div class="main-slider04">
+							<div class="bx_ban">
+								<div class="bx-wrapper" style="max-width: 100%; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 174px;"><ul class="banner-pic" style="width: auto; position: relative;">
+									<li style="float: none; list-style: none; position: absolute; display: block; width: 437px; z-index: 50;"><a href="https://swfss.eseoul.go.kr" target="_blank"><img src="/images/main/main_4slider1.png" alt="법인·시설 정보공시-사회복지법인 및 사회복지시설 운영 정보를 모든 시민들에게 투명하게 공시합니다"></a></li>
+									<li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><a href="/data/policy.do?no=3417"><img src="/images/main/main_4slider4.png" alt="2021년 1월부터 기초생활보장 생계급여 노인·한부모 포함 수급자 가구 부양의무자 기준이 폐지됩니다. 신청장소-주민등록상 주소지 읍·면·동주민센터 상담안내-보건복지부 상담센터(국번없이 129)"></a></li>
+								</ul></div><div class="bx-controls bx-has-controls-direction bx-has-controls-auto"><div class="bx-controls-direction"><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div><div class="bx-controls-auto"><div class="bx-controls-auto-item"><a class="bx-start active" href="">Start</a></div><div class="bx-controls-auto-item"><a class="bx-stop" href="">Stop</a></div></div></div></div>
+							</div>
+						</div>
+						<!-- <div class="main-loupe">
+							<dl>
+								<dt>법인·시설 <strong>정보공시</strong></dt>
+								<dd><a href="https://swfss.eseoul.go.kr" target="_blank">사회복지법인 및 사회복지시설 <br>운영 정보, 평가결과를 모든 <br>시민들에게  투명하게 공시합니다</a></dd>
+							</dl>
+						</div> -->
+					</div>
+				</div>
+			</div>
+			<div id="main-2floor">
+				<div class="main-2floor-top cfix">
+					<div class="main-board">
+						<ul class="cfix">
+							<li><a href="#none">서울시 새소식</a>
+								<div class="board-center">
+									<ul id="newsList"><li><div class="news"><span class="purple">장애인복지</span><a href="/news/welfareNews.do?newsGubun=handicap&amp;newsLink=http://news.seoul.go.kr/welfare/archives/530050">(추천명단)(#인천) 인천 e편한세상 주안 에듀서밋 서울시 장애인 특별공급 기관추천</a></div><span class="date">2021-03-24</span></li><li><div class="news"><span class="green">희망복지</span><a href="/news/welfareNews.do?newsGubun=hope&amp;newsLink=http://news.seoul.go.kr/welfare/archives/529999">서울시, '중증외상 최종치료센터' 4개소 첫 운영…치료 골든타임 사수</a></div><span class="date">2021-03-22</span></li><li><div class="news"><span class="blue">어르신복지</span><a href="/news/welfareNews.do?newsGubun=senior&amp;newsLink=http://news.seoul.go.kr/welfare/archives/527070">서울시, 코로나로 돌봄중단 어르신·장애인에 `4종 긴급돌봄`</a></div><span class="date">2021-01-22</span></li><li><div class="news"><span class="brown">자활복지</span><a href="/news/welfareNews.do?newsGubun=homeless&amp;newsLink=http://news.seoul.go.kr/welfare/archives/527000">서울시, 노숙인 응급잠자리 855개 운영…한파대비 거처 지원</a></div><span class="date">2021-01-19</span></li><li><div class="news"><span class="red">중장년복지</span><a href="/news/welfareNews.do?newsGubun=middleage&amp;newsLink=http://news.seoul.go.kr/welfare/archives/526957">서울시, 낡은 주택 고치고 에너지 효율 높일‘50+그린홈리모델링 활동가’모집</a></div><span class="date">2021-01-18</span></li></ul>
+								</div>
+								<div class="board-more"><a href="/news/welfareNews.do"><img src="/images/main/main_more.png" alt="더보기"></a></div>
+							</li>
+							<li><a href="#none">복지관 새소식</a>
+								<div class="board-center">
+									<ul id="centerNewsList"><li>	<div><a href="/news/welfareNewsCenter.do?no=3456">[재능기부강사모집] 우쿨렐레, 기타교실 재능기부 강사 모집</a></div>	<span class="date">2021-03-26</span></li><li>	<div><a href="/news/welfareNewsCenter.do?no=3439">2021년 한글교육 프로그램 ‘글사랑교실’ 한글1반 재능기부 강사 모집(등촌7종합사회복지관)</a></div>	<span class="date">2021-03-19</span></li><li>	<div><a href="/news/welfareNewsCenter.do?no=3434">행복한 육아러(로) 참여자 모집(시립용산노인종합복지관)</a></div>	<span class="date">2021-02-16</span></li><li>	<div><a href="/news/welfareNewsCenter.do?no=3411">서울시50플러스 북부캠퍼스 온라인 개관행사 </a></div>	<span class="date">2020-11-27</span></li><li>	<div><a href="/news/welfareNewsCenter.do?no=3400">(기쁜우리복지관) 제5회 아름드리문화축제</a></div>	<span class="date">2020-10-27</span></li></ul>
+								</div>
+								<div class="board-more"><a href="/news/welfareNewsCenter.do"><img src="/images/main/main_more.png" alt="더보기"></a></div>
+							</li>
+							<li><a href="#none">홍보자료실</a>
+								<div class="board-center">
+									<ul id="promotionList"><li>	<div><a href="/data/promotion.do?gbn=data_promotion_image&amp;no=3455">(이미지)코로나19 나의 백신 예방접종 장소는?   예방접종시기 및 장소를 확인하고 접종하세요.</a></div>	<span class="date">2021-03-26</span></li><li>	<div><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3450">(영상)아이파이낸스유 시즌 3 하이라이트 </a></div>	<span class="date">2021-03-23</span></li><li>	<div><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3447">(영상)아이파이낸스유 시즌2 하이라이트</a></div>	<span class="date">2021-03-23</span></li><li>	<div><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3445">(영상)I  파이낸스 U 는 무엇일가요.? </a></div>	<span class="date">2021-03-23</span></li><li>	<div><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3444">(영상)어디일까요?  서울금융복지상담센터</a></div>	<span class="date">2021-03-23</span></li></ul>
+								</div>
+								<div class="board-more"><a href="/data/promotion.do"><img src="/images/main/main_more.png" alt="더보기"></a></div>
+							</li>
+							<li><a class="on" href="#none">정책자료실</a>
+								<div class="board-center on">
+									<ul id="bbsList"><li>	<div><a href="/data/policy.do?no=3457">2020 하반기 서울시맞춤형 복지상황지도</a></div>	<span class="date">2021-03-26</span></li><li>	<div><a href="/data/policy.do?no=3438">‘어려운 이웃, 우리가 찾는다!!’ 서울시의 착한 탐정이 되어 보세요</a></div>	<span class="date">2021-03-16</span></li><li>	<div><a href="/data/policy.do?no=3437">서울시, 작년 코로나 속 4만여 취약어르신에 마음방역 ,건강관리 '맞춤돌봄'</a></div>	<span class="date">2021-03-16</span></li><li>	<div><a href="/data/policy.do?no=3436">서울시 1호 '뇌병변장애인 비전센터' 15일 개소… '23년 8개소로 확대</a></div>	<span class="date">2021-03-16</span></li><li>	<div><a href="/data/policy.do?no=3433">서울시, 설 명절 취약계층 촘촘히 챙긴다…안부 묻고 식품·위문품 전달</a></div>	<span class="date">2021-02-10</span></li></ul>
+								</div>
+								<div class="board-more on"><a href="/data/policy.do"><img src="/images/main/main_more.png" alt="더보기"></a></div>
+							</li>
+						</ul>
+					</div>
+					<div class="main-slider01">
+						<h4 class="main-title2">신고센터/상담센터</h4>
+						<div class="bx_ban">
+							<div class="bx-wrapper" style="max-width: 100%; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 259px;"><ul class="banner-pic" style="width: auto; position: relative;">
+								<li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><a href="/homeless/support.do"><img src="/images/main/main_2slider1.png" alt="노숙인 위기콜!! 전화로 365일 24시간 상담해 드립니다. 국번없이 1600-9582(구호빨리)로 전화 주세요! GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><a href="http://eungdapso.seoul.go.kr" target="_blank"><img src="/images/main/main_2slider2.png" alt="서울시민의 민원과 제안 다 듣겠습니다. 위기가구 신고 상담 GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><a href="https://www.seoulhousing.kr/jsp/center.do" target="_blank"><img src="/images/main/main_2slider3.png" alt="언제든지 주거복지 정보를 쉽게 접할 수 있는 주거복지 상담센터 GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><a href="http://sfwc.welfare.seoul.kr/sfwc/main.do" target="_blank"><img src="/images/main/main_2slider4.png" alt="서울시민의 금융 복지 문제를 함께 해결하는 서울금융복지상담센터 GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; display: list-item; width: 437px; z-index: 50;"><a href="https://www.clean.go.kr/index.do" target="_blank"><img src="/images/main/main_2slider5.png" alt="복지·보조금 부정신고센터 누구든지 복지·보조금 부정 사실을 알게 된 때에는 신고할 수 있습니다! GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; z-index: 0; display: none; width: 437px;"><a href="http://www.129.go.kr" target="_blank"><img src="/images/main/main_2slider6.png" alt="보건복지부 보건복지콜센터 129 보건복지관련 정보와 상담서비스를 제공해 드립니다 GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; z-index: 0; display: none; width: 437px;"><a href="/hope/center/vision.do?tab=3"><img src="/images/main/main_2slider7.png" alt="돌봄위기 신고는 120으로 GO"></a></li>
+								<li style="float: none; list-style: none; position: absolute; z-index: 0; display: none; width: 437px;"><a href="http://saapd.or.kr" target="_blank"><img src="/images/main/main_2slider8.png" alt="장애인 학대 인권침해 신고상담, 신고전화 1644 8295; 서울특별시 장애인권익옹호기관"></a></li>
+							</ul></div><div class="bx-controls bx-has-controls-direction bx-has-controls-auto"><div class="bx-controls-direction"><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div><div class="bx-controls-auto"><div class="bx-controls-auto-item"><a class="bx-start active" href="">Start</a></div><div class="bx-controls-auto-item"><a class="bx-stop" href="">Stop</a></div></div></div></div>
+							<p class="banner-count"><span id="banner-index">5</span> <span id="banner-total">8</span></p>
+						</div>
+					</div>
+				</div>
+				<div class="main-2floor-bom cfix">
+					<div class="main-slider02">
+						<h4 class="main-title2">영상으로 보는 복지</h4>
+						<div class="bx_ban">
+							<div class="bx-wrapper" style="max-width: 600px; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 212px;"><ul class="banner-pic" id="movie-slider" style="width: auto; position: relative;"><li style="float: none; list-style: none; position: absolute; display: block; width: 437px; z-index: 50;"><div class="photo">	<a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3447" class="main-list-photo">	<img src="/rest/file/thumbnail/4e5cdd87d96542c5af118affb4d29385/1" alt="아이파이낸스유 시즌2 하이라이트 썸네일" title="아이파이낸스유 시즌2 하이라이트 썸네일">	</a></div>	<ul class="words">  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3447"><em>[영상자료]</em>아이파이낸스유 시즌2 하이라이트</a></li>      <li>2021-03-23</li>	</ul></li><li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><div class="photo">	<a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3445" class="main-list-photo">	<img src="/rest/file/thumbnail/60030a70a7e042f2a455e8e8c9d3a743/2" alt="I  파이낸스 U 는 무엇일가요.?  썸네일" title="I  파이낸스 U 는 무엇일가요.?  썸네일">	</a></div>	<ul class="words">  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_video&amp;no=3445"><em>[영상자료]</em>I  파이낸스 U 는 무엇일가요.? </a></li>      <li>2021-03-23</li>	</ul></li></ul></div><div class="bx-controls bx-has-controls-direction bx-has-controls-auto"><div class="bx-controls-direction"><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div><div class="bx-controls-auto"><div class="bx-controls-auto-item"><a class="bx-start active" href="">Start</a></div><div class="bx-controls-auto-item"><a class="bx-stop" href="">Stop</a></div></div></div></div>
+						</div>
+						<a class="a-more" href="/data/promotion.do"><img src="/images/main/main_more.png" alt="더보기"></a>
+					</div>
+					<div class="main-slider03">
+						<h4 class="main-title2">이미지로 보는 복지</h4>
+						<div class="bx_ban">
+							<div class="bx-wrapper" style="max-width: 600px; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 234px;"><ul class="banner-pic" id="img-slider" style="width: auto; position: relative;"><li style="float: none; list-style: none; position: absolute; display: none; width: 437px; z-index: 0;"><div class="photo">	<a href="/data/promotion.do?gbn=data_promotion_image&amp;no=3455" class="main-list-photo">	<img src="/rest/file/thumbnail/a1d2133742c640289bf26c59e3cd437b/1" alt="코로나19 나의 백신 예방접종 장소는?   예방접종시기 및 장소를 확인하고 접종하세요. 썸네일" title="코로나19 나의 백신 예방접종 장소는?   예방접종시기 및 장소를 확인하고 접종하세요. 썸네일">	</a></div>	<ul class="words">  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_image&amp;no=3455"><em>[사진자료]</em>코로나19 나의 백신 예방접종 장소는?   예방접종시기 및 장소를 확인하고 접종하세요.</a></li>      <li>2021-03-26</li>	</ul></li><li style="float: none; list-style: none; position: absolute; display: list-item; width: 437px; z-index: 50;"><div class="photo">	<a href="/data/promotion.do?gbn=data_promotion_image&amp;no=3435" class="main-list-photo">	<img src="/rest/file/thumbnail/9d0854c965c44fa88a23022fe9c805cf/1" alt="어려운 이웃 찾는 착한 탐정이 되어주세요! 썸네일" title="어려운 이웃 찾는 착한 탐정이 되어주세요! 썸네일">	</a></div>	<ul class="words">  	<li class="title"><a href="/data/promotion.do?gbn=data_promotion_image&amp;no=3435"><em>[사진자료]</em>어려운 이웃 찾는 착한 탐정이 되어주세요!</a></li>      <li>2021-03-11</li>	</ul></li></ul></div><div class="bx-controls bx-has-controls-direction bx-has-controls-auto"><div class="bx-controls-direction"><a class="bx-prev" href="">Prev</a><a class="bx-next" href="">Next</a></div><div class="bx-controls-auto"><div class="bx-controls-auto-item"><a class="bx-start active" href="">Start</a></div><div class="bx-controls-auto-item"><a class="bx-stop" href="">Stop</a></div></div></div></div>
+						</div>
+						<a class="a-more" href="/data/promotion.do?gbn=data_promotion_image"><img src="/images/main/main_more.png" alt="더보기"></a>
+					</div>
+					<div class="app-share">
+		                <ul class="cfix">
+		                  <li>
+		                    <a class="on" href="#none">facebook</a>
+		                    <div class="share-center on">
+								<ul class="webtoon-center face-book">
+									<li>
+										<a href="https://www.facebook.com/seoulwelfarefoundation" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon01.gif" alt="서울시복지재단"></span>
+											<div class="text-icon">
+												<h3 class="tit">서울시복지재단</h3>
+												<p class="txt">@seoulwelfarefoundation·사회 서비스</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/seoulpasscare" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon02.gif" alt="서울시사회서비스원"></span>
+											<div class="text-icon">
+												<h3 class="tit">서울시사회서비스원</h3>
+												<p class="txt">@seoulpasscare · 공공 및 정부 기관</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/sfwc135" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon03.gif" alt="서울금융복지상담센터"></span>
+											<div class="text-icon">
+												<h3 class="tit">서울금융복지상담센터</h3>
+												<p class="txt">@sfwc135 · 사회 서비스</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/seoul50plus" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon04.gif" alt="서울시50플러스재단"></span>
+											<div class="text-icon">
+												<h3 class="tit">서울시50플러스재단</h3>
+												<p class="txt">@seoul50plus · 관공서</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/sisff.seoulnoin" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon05.gif" alt="서울노인영화제"></span>
+											<div class="text-icon">
+												<h3 class="tit">서울노인영화제</h3>
+												<p class="txt">@sisff.seoulnoin · 비영리 단체</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/mohwpr" target="_blank">
+											<span class="icon"><img src="/images/main/facebook-icon06.gif" alt="보건복지부"></span>
+											<div class="text-icon">
+												<h3 class="tit">보건복지부</h3>
+												<p class="txt">@mohwpr · 정부 기관</p>
+											</div>
+										</a>
+									</li>
+								  </ul>
+		                    </div>
+		                  </li>
+		                  <li>
+		                    <a href="#none">YouTube</a>
+		                    <div class="share-center">
+		                      <ul class="webtoon-center youtube">
+		                        <li>
+									<a href="https://www.youtube.com/channel/UCnWf50K_zrZAPDoUFiHtnwQ" target="_blank">
+										<span class="icon"><img src="/images/main/facebook-icon01.gif" alt="서울시복지재단"></span>
+										<div class="text-icon">
+											<h3 class="tit">서울시복지재단</h3>
+										</div>
+									</a>
+		                        </li>
+								<li>
+									<a href="https://www.youtube.com/channel/UCjGFWXOLKRkVHcWg84nW4Vw" target="_blank">
+										<span class="icon"><img src="/images/main/facebook-icon03.gif" alt="서울금융복지상담센터"></span>
+										<div class="text-icon">
+											<h3 class="tit">서울금융복지상담센터</h3>
+										</div>
+									</a>
+		                        </li>
+								<li>
+									<a href="https://www.youtube.com/channel/UCmS3tLqfw5g1glIQ4J1HfrA" target="_blank">
+										<span class="icon"><img src="/images/main/facebook-icon04.gif" alt="서울시50플러스재단"></span>
+										<div class="text-icon">
+											<h3 class="tit">서울시50플러스재단</h3>
+										</div>
+									</a>
+		                        </li>
+								<li>
+									<a href="https://www.youtube.com/user/sisff2013" target="_blank">
+										<span class="icon"><img src="/images/main/facebook-icon05.gif" alt="서울노인영화제"></span>
+										<div class="text-icon">
+											<h3 class="tit">서울노인영화제</h3>
+										</div>
+									</a>
+		                        </li>
+								<li>
+									<a href="https://www.youtube.com/user/mohwpr" target="_blank">
+										<span class="icon"><img src="/images/main/facebook-icon06.gif" alt="보건복지부 "></span>
+										<div class="text-icon">
+											<h3 class="tit">보건복지부 </h3>
+										</div>
+									</a>
+		                        </li>
+		                      </ul>
+		                    </div>
+		                  </li>
+		            	</ul>
+		        	</div>
+				</div>
+			</div>
+			<div id="main-3floor">
+				<div class="main-3floor">
+					<div class="cfix">
+						<div class="floor3-left">
+							<div class="main-city">
+								<dl>
+									<dt>장애인 관광정보</dt>
+									<dd>나에게 맞는 장애인 관광정보를 <br>찾아보세요</dd>
+								</dl>
+								<ul class="cfix">
+									<li class="bg1"><a href="/handicap/tour/attraction.do">관광지</a></li>
+									<li class="bg2"><a href="/handicap/tour/accommodations.do">숙박</a></li>
+									<li class="bg3"><a href="/handicap/tour/restaurant.do">음식점</a></li>
+									<li class="bg4"><a href="/handicap/tour/convenient.do">편의시설</a></li>
+								</ul>
+							</div>
+							<div class="only-select">
+								<h4>자치구 복지서비스 바로가기</h4>
+								<ul class="select-go cfix">
+									<li>
+										<select id="gu" title="자치구 선택">
+											<option value="">구를 선택해주세요</option>
+											<option value="http://www.jongno.go.kr/Main.do?menuNo=1455">종로구</option>
+											<option value="http://www.junggu.seoul.kr/main.do?menuid=4814">중구</option>
+											<option value="http://www.yongsan.go.kr/site/wf2/index.jsp ">용산구</option>
+											<option value="http://sd.go.kr/sd/main.do?op=mainSub&amp;mCode=13C160010010">성동구</option>
+											<option value="https://www.gwangjin.go.kr/portal/bbs/B0000178/list.do?menuNo=200301">광진구</option>
+											<option value="http://www.ddm.go.kr/education/main.jsp">동대문구</option>
+											<option value="https://www.jungnang.go.kr/portal/main/contents.do?menuNo=200142">중랑구</option>
+											<option value="http://www.sb.go.kr/PageLink.do?link=forward:/PageContent.do&amp;tempParam1=&amp;menuNo=06000000&amp;subMenuNo=06020000&amp;thirdMenuNo=&amp;fourthMenuNo=">성북구</option>
+											<option value="http://www.gangbuk.go.kr/www/choiceWelfare.do?key=8765&amp;bunRyu=1">강북구</option>
+											<option value="http://www.dobong.go.kr/Contents.asp?code=10006300">도봉구</option>
+											<option value="https://www.nowon.kr/www/info/info2/info2_02/info2_02_03/info2_02_03_01.jsp">노원구</option>
+											<option value="https://www.ep.go.kr/CmsWeb/viewPage.req?idx=PG0000003755">은평구</option>
+											<option value="http://www.sdm.go.kr/genre/welfare.do">서대문구</option>
+											<option value="https://www.mapo.go.kr/site/main/content/mapo050101">마포구</option>
+											<option value="http://www.yangcheon.go.kr/site/yangcheon/05/10501010100002016081013.jsp">양천구</option>
+											<option value="http://www.gangseo.seoul.kr/new_portal/living/main2_13.jsp">강서구</option>
+											<option value="https://www.guro.go.kr/www/contents.do?key=2164">구로구</option>
+											<option value="https://www.geumcheon.go.kr/portal/contents.do?key=501">금천구</option>
+											<option value="https://www.ydp.go.kr/www/selectBbsNttList.do?bbsNo=40&amp;key=3257&amp;searchCtgry=%EB%B3%B5%EC%A7%80&amp;">영등포구</option>
+											<option value="http://www.dongjak.go.kr/portal/main/contents.do?menuNo=200274">동작구</option>
+											<option value="http://www.gwanak.go.kr/site/gwanak/area/areaList.do?cateCont=Area01">관악구</option>
+											<option value="http://www.seocho.go.kr/site/seocho/gis/Gis_List.do?type1=welfare">서초구</option>
+											<option value="http://www.gangnam.go.kr/contents/financial_support/1/view.do?mid=FM010513">강남구</option>
+											<option value="http://www.songpa.go.kr/user.kdf?a=songpa.menu.MenuApp&amp;c=1001&amp;cate_id=AD0702000000">송파구</option>
+											<option value="http://welfare.gangdong.go.kr/web/portal/welfare.do">강동구</option>
+										</select>
+										<a href="javascript:;" onclick="site_link('gu');" title="새창">이동</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="main-map">
+							<h4>서울시 복지지도</h4>
+							<div class="map-menu">
+								<ul class="cfix">
+									<li><a href="javascript:;" onclick="map_open('6Monl');"><img src="/images/main/map_img1.png" alt="어르신"><br>어르신</a></li>
+									<li><a href="javascript:;" onclick="map_open('6ModD');"><img src="/images/main/map_img2.png" alt="장애인"><br>장애인</a></li>
+									<li><a href="javascript:;" onclick="map_open('6Moit');"><img src="/images/main/map_img3.png" alt="여성/아동"><br>여성/아동</a></li>
+									<li><a href="javascript:;" onclick="map_open('6Mot8');"><img src="/images/main/map_img4.png" alt="한부모/다문화"><br>한부모/다문화</a></li>
+									<li><a href="javascript:;" onclick="map_open('6MooG');"><img src="/images/main/map_img5.png" alt="복지관/자활"><br>복지관/자활</a></li>
+									<li><a href="javascript:;" onclick="map_open('6Moge');"><img src="/images/main/map_img6.png" alt="건강/재활"><br>건강/재활</a></li>
+								</ul>
+							</div>
+							<a href="javascript:;" onclick="map_open('');" class="a-more"><img src="/images/main/main_more2.png" alt="더보기"></a>
+						</div>
+						<div class="main-children">
+							<dl>
+								<dt>복지서비스 모의계산</dt>
+								<dd>나에게 맞는 복지서비스비용을 <br>미리 계산해보세요</dd>
+							</dl>
+							<ul>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=01" target="_blank">국민기초생활보장</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=31" target="_blank">산모신생아건강관리</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=33" target="_blank">아이돌봄서비스</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=12" target="_blank">초중고 교육비지원</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=08" target="_blank">한부모가족지원</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=21" target="_blank">장애(아동)수당</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=05" target="_blank">장애인연금</a></li>
+								<li><a href="http://www.bokjiro.go.kr/gowf/wel/welsvc/imtcalc/WelImtCalcStep.do?guaSeCode=41" target="_blank">기초연금</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="main-select">
+						<h4>유관기관 <br>바로가기</h4>
+						<ul class="select-go cfix">
+							<li>
+								<select id="instt1" title="서울시 복지전문기관 선택">
+									<option value="">서울시 복지전문기관</option>
+									<option value="http://www.welfare.seoul.kr">서울시복지재단</option>
+									<option value="http://seoul.pass.or.kr">서울사회서비스원</option>
+									<option value="https://50plus.or.kr">50플러스포털</option>
+									<option value="http://child.seoul.go.kr">아동복지센터</option>
+									<option value="http://seoulhanbumo.or.kr">한부모가족지원센터</option>
+									<option value="https://health.seoulmc.or.kr">시민건강포털</option>
+									<option value="http://cafe.daum.net/sascwi">서울시노인복지협회</option>
+									<option value="http://www.saswc.or.kr">서울시노인종합복지관협회</option>
+									<option value="http://www.sacold.or.kr">서울시재가노인복지협회</option>
+									<option value="http://www.saswc.org">서울시사회복지관협회</option>
+									<option value="http://together-seoul.org">서울시장애인복지관협회</option>
+									<option value="http://www.jjang2.or.kr">서울시장애인복지시설협회</option>
+									<option value="http://jobable.seoul.go.kr/jobable/Main.do?method=getMain">장애인일자리통합지원센터</option>
+									<option value="https://careerpluscenter.com">커리어플러스센터</option>
+									<option value="http://saapd.or.kr">서울시장애인인권센터</option>
+									<option value="http://wish.welfare.seoul.kr/front/wsp/main/view/main.do">공유복지플랫폼</option>
+									<option value="http://www.homelesskr.org">다시서기종합지원센터</option>
+									<option value="http://swlc.welfare.seoul.kr/swlc/index.action">서울사회복지공익법센터</option>
+									<option value="https://iseoul.seoul.go.kr/portal/mainCall.do">서울보육포털</option>
+									<option value="http://seoul.childcare.go.kr/ccef/main.jsp">육아종합지원센터</option>
+									<option value="http://sswomen.or.kr">서울시여성보호센터</option>
+									<option value="http://sll.seoul.go.kr">평생학습포털</option>
+									<option value="https://www.mcfamily.or.kr/intro_web.php">서울시한울타리</option>
+									<option value="http://www.sisul.or.kr/open_content/memorial">장사시설</option>
+								</select>
+								<a href="javascript:;" onclick="site_link('instt1');" title="새창">이동</a>
+							</li>
+							<li>
+								<select id="instt2" title="정부부처기관 선택">
+									<option value="">정부부처기관</option>
+									<option value="http://bokjiro.go.kr">복지로</option>
+									<option value="http://www.mohw.go.kr">보건복지부</option>
+									<option value="http://www.ssc.go.kr/main.tiles">사회보장위원회</option>
+									<option value="http://www.ssis.or.kr">사회보장정보원</option>
+									<option value="https://www.socialservice.or.kr:444">사회서비스전자바우처</option>
+									<option value="http://www.ableservice.or.kr">장애인활동지원</option>
+									<option value="http://www.freeget.net/main.php">한국장애인재활협회</option>
+									<option value="http://www.g-health.kr/portal/index.do">공공보건포털</option>
+									<option value="http://www.voucher.go.kr/common/main.do">국민행복카드(국가바우처)</option>
+									<option value="https://www.dreamstart.go.kr">드림스타트</option>
+									<option value="http://www.childinfo.go.kr/main.jsp">어린이집/유치원 통합정보공시</option>
+									<option value="http://www.korea1391.go.kr/new/">아동보호전문기관</option>
+									<option value="http://www.childcare.go.kr">아이사랑</option>									
+								</select>
+								<a href="javascript:;" onclick="site_link('instt2');" title="새창">이동</a>
+							</li>
+							<li>
+								<select id="instt3" title="종합사회복지관 선택">
+									<option value="">종합사회복지관</option>
+									<option value="http://www.garak.or.kr">가락종합사회복지관</option>
+									<option value="http://www.gayang4.or.kr/">가양4종합사회복지관</option>
+									<option value="http://www.gy5welfare.or.kr">가양5종합사회복지관</option>
+									<option value="http://www.gayang7.or.kr">가양7종합사회복지관</option>
+									<option value="http://www.kangnamwelfare.co.kr">강남종합사회복지관</option>
+									<option value="http://www.kdswc.or.kr">강동종합사회복지관</option>
+									<option value="http://www.gongneung.or.kr/">공릉종합사회복지관</option>
+									<option value="http://www.gj.or.kr">광장종합사회복지관</option>
+									<option value="https://9ro.or.kr:57459/main/main.html">구로종합사회복지관</option>
+									<option value="http://www.gangbuk.or.kr">구세군강북종합사회복지관</option>
+									<option value="http://www.happykd.or.kr">궁동종합사회복지관</option>
+									<option value="http://www.gcnuri.or.kr/">금천누리종합사회복지관</option>
+									<option value="http://www.guswc.org">길음종합사회복지관</option>
+									<option value="http://www.nowon.or.kr">노원1종합사회복지관</option>
+									<option value="http://nokbeon.or.kr/">녹번종합사회복지관</option>
+									<option value="http://nungin.or.kr/">능인종합사회복지관</option>
+									<option value="http://www.daebangswc.org">대방종합사회복지관</option>
+									<option value="http://www.daechung.or.kr">대청종합사회복지관</option>
+									<option value="http://www.dbsw.or.kr">도봉서원종합사회복지관</option>
+									<option value="https://cafe.naver.com/ddmwelfare ">동대문종합사회복지관</option>
+									<option value="http://www.isuwelfare.or.kr/">동작이수종합사회복지관</option>
+									<option value="http://www.dongjaksw.or.kr">동작종합사회복지관</option>
+									<option value="http://www.dc1welfare.or.kr">등촌1종합사회복지관</option>
+									<option value="http://www.dc4.or.kr">등촌4종합사회복지관</option>
+									<option value="https://dc7.or.kr:58916/index.php">등촌7종합사회복지관</option>
+									<option value="http://www.madeul.org">마들종합사회복지관</option>
+									<option value="http://macheon-welfare.or.kr/">마천종합사회복지관</option>
+									<option value="http://truem.or.kr/">면목종합사회복지관</option>
+									<option value="http://www.mokdongswc.org">목동종합사회복지관</option>
+									<option value="https://www.mybanpo.org/">반포종합사회복지관</option>
+									<option value="https://www.cbwc.or.kr/">방배종합사회복지관</option>
+									<option value="https://bangahgol1998.modoo.at">방아골종합사회복지관</option>
+									<option value="http://www.banghwa11.or.kr">방화11종합사회복지관</option>
+									<option value="http://banghwa2.goodneighbors.kr/">방화2종합사회복지관</option>
+									<option value="http://banghwa6.or.kr/">방화6종합사회복지관</option>
+									<option value="http://www.saeun.com">번동2단지종합사회복지관</option>
+									<option value="http://www.bestbun3.org">번동3단지종합사회복지관</option>
+									<option value="http://bun5bok.co.kr">번동5단지종합사회복지관</option>
+									<option value="http://bdswc.or.kr/">본동종합사회복지관</option>
+									<option value="http://www.bongchuny.or.kr">봉천종합사회복지관</option>
+									<option value="http://www.bookboo.or.kr/">북부종합사회복지관</option>
+									<option value="http://www.sadangwelfare.org">사당종합사회복지관</option>
+									<option value="http://www.laf.or.kr/">사랑의전화종합사회복지관</option>
+									<option value="http://www.samjeon.or.kr">삼전종합사회복지관</option>
+									<option value="http://www.sanggyebokji.or.kr">상계종합사회복지관</option>
+									<option value="http://www.happysangdo.or.kr">상도종합사회복지관</option>
+									<option value="http://www.lifelineseoul.or.kr">생명의전화종합사회복지관</option>
+									<option value="https://sdmbokji.or.kr:58153/">서대문종합사회복지관</option>
+									<option value="http://www.goodwill.or.kr">선의관악종합사회복지관</option>
+									<option value="http://www.welfarecenter.or.kr">성내종합사회복지관</option>
+									<option value="https://www.linksd.net:56892/">성동종합사회복지관</option>
+									<option value="http://www.smw.or.kr">성민종합사회복지관</option>
+									<option value="http://www.sungsanwelfare.or.kr">성산종합사회복지관</option>
+									<option value="http://www.hycusc.or.kr">성수종합사회복지관</option>
+									<option value="http://www.songpacc.or.kr">송파종합사회복지관</option>
+									<option value="http://mhwelfare.or.kr/">수서명화종합사회복지관</option>
+									<option value="http://www.sschild.sc.or.kr">수서종합사회복지관</option>
+									<option value="https://uoscc.or.kr">시립대학교종합사회복지관</option>
+									<option value="http://singil.weelsystem.co.kr/">신길종합사회복지관</option>
+									<option value="http://www.snwc.or.kr">신내종합사회복지관</option>
+									<option value="http://www.shindang.or.kr/">신당종합사회복지관</option>
+									<option value="https://sillym.or.kr/">신림종합사회복지관</option>
+									<option value="http://www.shinmok.or.kr/">신목종합사회복지관</option>
+									<option value="http://sscc.or.kr/main/">신사종합사회복지관</option>
+									<option value="https://blog.naver.com/sinwc0414">신월종합사회복지관</option>
+									<option value="http://www.shinjung.or.kr/">신정종합사회복지관</option>
+									<option value="http://www.yangjaewc.or.kr/">양재종합사회복지관</option>
+									<option value="http://www.childfund-ydp.or.kr">영등포종합사회복지관</option>
+									<option value="http://www.oksoocwc.or.kr">옥수종합사회복지관</option>
+									<option value="http://www.woomyun.or.kr">우면종합사회복지관</option>
+									<option value="http://www.wwc.or.kr">월계종합사회복지관</option>
+									<option value="http://www.hmwolgok.or.kr/main/main.html">월곡종합사회복지관</option>
+									<option value="http://www.yurak.or.kr">유락종합사회복지관</option>
+									<option value="http://www.yurin.or.kr ">유린원광종합사회복지관</option>
+									<option value="http://www.eunpyeong.or.kr">은평종합사회복지관</option>
+									<option value="http://www.ewhawelfare.or.kr/">이화여대종합사회복지관</option>
+									<option value="http://www.jayang.or.kr">자양종합사회복지관</option>
+									<option value="http://www.jamsilswc.or.kr/">잠실종합사회복지관</option>
+									<option value="https://jang-an.or.kr">장안종합사회복지관</option>
+									<option value="http://www.jangwi.or.kr">장위종합사회복지관</option>
+									<option value="http://www.jnwelfare.or.kr">정릉종합사회복지관</option>
+									<option value="http://www.jongno.or.kr/">종로종합사회복지관</option>
+									<option value="http://www.junggye.or.kr">중계종합사회복지관</option>
+									<option value="http://www.chunggok.org">중곡종합사회복지관</option>
+									<option value="http://www.jlcwc.or.kr/">중림종합사회복지관</option>
+									<option value="http://www.causwc.or.kr/">중앙종합사회복지관</option>
+									<option value="http://changdong21.or.kr">창동종합사회복지관</option>
+									<option value="http://chungdam.or.kr/">청담종합사회복지관</option>
+									<option value="http://www.taiwha.or.kr/2012/">태화기독교종합사회복지관</option>
+									<option value="http://www.pyunghwa.or.kr">평화종합사회복지관</option>
+									<option value="https://pnwelfare.modoo.at/">풍납종합사회복지관</option>
+									<option value="http://www.hgwelfare.or.kr/">하계종합사회복지관</option>
+									<option value="http://www.han-bit.or.kr">한빛종합사회복지관</option>
+									<option value="http://www.hwelfare.or.kr">홍은종합사회복지관</option>
+									<option value="http://www.hwawon.org">화원종합사회복지관</option>
+									<option value="https://www.hyochang.or.kr:6017/">효창종합사회복지관</option>
+								</select>
+								<a href="javascript:;" onclick="site_link('instt3');" title="새창">이동</a>
+							</li>
+							<li>
+								<select id="instt4" title="노인종합복지관 선택">
+									<option value="">노인종합복지관</option>
+									<option value="http://www.gdsw.or.kr">강동노인종합복지관</option>
+									<option value="http://www.gswc.or.kr">강북노인종합복지관</option>
+									<option value="http://www.gangseosenior.or.kr">강서노인종합복지관</option>
+									<option value="http://noinjigi.org">관악노인종합복지관</option>
+									<option value="http://www.gjsenior.or.kr">광진노인종합복지관</option>
+									<option value="http://www.gurosenior.or.kr">구로노인종합복지관</option>
+									<option value="http://www.hello-senior.or.kr">금천노인종합복지관</option>
+									<option value="http://hoam.or.kr">금천호암노인종합복지관</option>
+									<option value="http://www.nowonsenior.or.kr">노원노인종합복지관</option>
+									<option value="http://dobongnoin.or.kr">도봉노인종합복지관</option>
+									<option value="http://www.happysenior.or.kr">동대문노인종합복지관</option>
+									<option value="http://www.djsw.or.kr/main">동작노인종합복지관</option>
+									<option value="http://www.senior21.or.kr">마포노인종합복지관</option>
+									<option value="http://www.sdmsenior.or.kr">서대문노인종합복지관</option>
+									<option value="http://www.seoulnoin.or.kr">서울노인복지센터</option>
+									<option value="http://www.sdsenior.or.kr">성동노인종합복지관</option>
+									<option value="http://www.sbnoin.or.kr">성북노인종합복지관</option>
+									<option value="http://www.ysnoin.or.kr">용산노인종합복지관</option>
+									<option value="http://www.ep-silver.org">은평노인종합복지관</option>
+									<option value="http://www.eorsin.com">중랑노인종합복지관</option>
+									<option value="http://www.gangnam.go.kr/office/gnsw">강남노인종합복지관</option>
+									<option value="http://www.gangnam.go.kr/office/nonhyunsenior">논현노인종합복지관</option>
+									<option value="http://www.mdsilver.or.kr">목동실버복지문화센터</option>
+									<option value="http://www.bbsenior.org/kor">방배노인종합복지관</option>
+									<option value="http://www.song-pa.or.kr">송파노인종합복지관</option>
+									<option value="http://www.shinnaesenior.or.kr/main">신내노인종합복지관</option>
+									<option value="http://www.yssenior.co.kr">약수노인종합복지관</option>
+									<option value="http://www.seochosenior.org">양재노인종합복지관</option>
+									<option value="http://www.ycnoin.org">양천어르신종합복지관</option>
+									<option value="http://www.silverwelfare.or.kr">영등포노인종합복지관</option>
+									<option value="http://www.on9988.or.kr">온수어르신복지관</option>
+									<option value="http://www.woorimapo.org/new/">우리마포복지관</option>
+									<option value="http://www.jongnonoin.or.kr">종로노인종합복지관</option>
+									<option value="http://www.seochonoin.org">중앙노인종합복지관</option>
+									<option value="http://www.seniorplaza.or.kr">강남시니어플라자</option>
+									<option value="http://www.skjsenior.org">성가정노인종합복지관</option>
+									<option value="http://www.gomdallaeswc.or.kr">곰달래어르신복지센터</option>
+									<option value="http://www.sgdw.kr">사근동노인복지센터</option>
+									<option value="http://songpasilbeot.or.kr">송파실벗뜨락</option>
+									<option value="http://smdswc.or.kr">쌍문동노인복지센터</option>
+									<option value="http://www.gangnam.go.kr/office/happy-apgu">압구정노인복지센터</option>
+									<option value="http://www.gangnam.go.kr/office/ysenior">역삼노인복지센터</option>
+									<option value="http://www.mapolovedream.or.kr">용강노인복지관</option>
+									<option value="http://www.gdhg9988.or.kr">해공노인복지관</option>
+								</select>
+								<a href="javascript:;" onclick="site_link('instt4');" title="새창">이동</a>
+							</li>
+						</ul>
+					</div>
+					<div style="margin-top:18px;">
+<!-- NHN ACE : [복지포털] 메인 (1200*70) 태그 -->
+<script><!--//<![CDATA[
+   var m3_b = '';
+   var m3_u = (location.protocol=='https:'?'https://delivery.dighty.com/www/delivery/ajs.php':'http://delivery.dighty.com/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if(document.cookie.indexOf('ACEUACS=')>-1){ 
+   var m3_b = document.cookie.substr(document.cookie.indexOf('ACEUACS=')+8,19);}
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+   document.write ("?zoneid=761");
+   document.write ('&amp;cb=' + m3_r);
+   if (m3_b!='')document.write('&amp;bd=' + m3_b);
+   if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write ("&amp;loc=" + escape(window.location));
+   if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+   if (document.context) document.write ("&context=" + escape(document.context));
+   if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+   document.write ("'><\/scr"+"ipt>");
+//]]>--></script><script type="text/javascript" src="https://delivery.dighty.com/www/delivery/ajs.php?zoneid=761&amp;cb=87416112691&amp;charset=UTF-8&amp;loc=https%3A//wis.seoul.go.kr/&amp;referer=https%3A//www.google.com/"></script><a href="https://delivery.dighty.com/www/delivery/ck.php?oaparams=2__bannerid=6300__zoneid=761__cb=96520f1e54__oadest=https%3A%2F%2Fmediahub.seoul.go.kr%2Fmissions%2F2000002" target="_blank"><img src="https://cm.dighty.com/creative/8660d3c0d34371e6ad67cca9235cf6a0.jpg" width="1200" height="70" alt="내 손안에 서울 앱 다운로드 이벤트 앱 다 받아랏 3월 22일 월요일부터 4월 10일 토요일까지" title="내 손안에 서울 앱 다운로드 이벤트 앱 다 받 아랏 3월 22일 월요일부터 4월 10일 토요일까지"></a><div id="beacon_96520f1e54" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="https://delivery.dighty.com/www/delivery/lg.php?bannerid=6300&amp;campaignid=1162&amp;zoneid=761&amp;loc=https%3A%2F%2Fwis.seoul.go.kr%2F&amp;referer=https%3A%2F%2Fwww.google.com%2F&amp;cb=96520f1e54" width="0" height="0" alt="" style="width: 0px; height: 0px;"></div>
+					
+						<noscript><a href="https://delivery.dighty.com/www/delivery/ck.php?n=88ae6372&amp;cb=INSERT_RANDOM_NUMBER_HERE" target="_blank">
+						<img src="https://delivery.dighty.com/www/delivery/avw.php?zoneid=761&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=88ae6372" alt="" /></a></noscript>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main-popup" style="display:none;">
+			<div class="main-popup">
+				<div class="main-popup-top">
+					<h3><img src="/images/main/popup_img2.gif" alt="복지포털 개편 안내"></h3>
+					<p>서울시 복지포털을 아껴주시고 잘 활용해 주셔서 감사드립니다.</p>
+					<p>그간 이용하시는데 다소 불편함을 드렸던 점을 개선하여 <br>다음과 같이 새롭게 출발하였습니다.</p>
+				</div>
+				<ul class="main-popup-clause">
+					<li>
+						<h4><strong>1.</strong>첫 화면 디자인을 새롭게 개편하였습니다.</h4>
+						<p>따뜻한 오렌지톤을 사용하여 복지를 통한 풍요로움과 따뜻함을 담아 부드러운 이미지가 강조되도록 하였습니다. <br>바로가기 서비스와 맞춤검색 서비스로 사용성과 정보제공 기능을 강조하였습니다.</p>
+					</li>
+					<li>
+						<h4><strong>2.</strong>어르신 돌봄서비스 맞춤조회가 추가되었습니다.</h4>
+						<p>메인화면 상단 우측에서 돌봄 맞춤검색을 선택하여 연령별, 요양등급별, 소득기준별 지원내용을 검색할 수 있습니다. <br>개인에게 알맞은 서비스를 미리 확인하시고 동주민센터 또는 관련 복지시설에서 상세한 안내를 받으실 수 있습니다.</p>
+					</li>
+					<li>
+						<h4><strong>3.</strong>지역별 복지관의 소식을 만날 수 있습니다.</h4>
+						<p>종합사회복지관, 노인복지관, 복지유관기관 바로가기를 통해 집근처의 복지시설들의 각종 프로그램을 확인하여 이용하실 수 있고 시설별 공지사항도 등록하도록 하였습니다.</p>
+					</li>
+					<li>
+						<h4><strong>4.</strong>복지지도를 활용하여 다양한 복지시설의 위치를 쉽게 찾을 수 있습니다.</h4>
+						<p>복지시설의 종류별로 서울시 지도위에 위치를 표시하여 지역별 복지시설 분포현황과 해당시설 현황을 확인할 수 있습니다. 거주지 주변의 다양한 복지시설을 검색하여 필요한 시설을 사전에 확인할 수 있습니다.</p>
+					</li>
+					<li>
+						<h4><strong>5.</strong>복지포털 내의 다양한 정보에 대해 직접 검색 할 수 있습니다.</h4>
+						<p>복지시설의 종류별로 서울시 지도위에 위치를 표시하여 지역별 복지시설 분포현황과 해당시설 현황을 확인할 수 있습니다. 거주지 주변의 다양한 복지시설을 검색하여 필요한 시설을 사전에 확인할 수 있습니다.</p>
+					</li>
+					<li>
+						<h4><strong>6.</strong>모바일에서도 쉽게 이용할 수 있습니다.</h4>
+						<p>별도의 앱 설치 없이도 스마트폰에서 홈페이지 주소만 입력하면 복지포털 홈페이지의 내용을 모두 조회할 수 있도록 적용하여 이동 중에도 복지포털을 편리하게 사용할 수 있습니다.</p>
+						<p class="mt15">서울시 복지포털은 시민 여러분의 의견에 따라 운영하고 있습니다. 새롭게 개편된 사이트를 적극적으로 활용해 주시고, 이번 개편 결과 발생한 오류나 문제점들은 메일(seoulwis@korea.kr)로 의견을 주시면 개선해 나아가겠습니다.</p>
+					</li>
+					<li>감사합니다.</li>
+				</ul>
+				<a class="main-popup-close" href="javascript:;" onclick="$('#main-popup').hide();"><img src="/images/main/popup_img1.gif" alt="팝업안내창 닫기"></a>
+			</div>
+		</div>
+	</div>
+	<!-- main end -->
+
+    <!-- footer start -->
+	
+
+
+
+
+
+
+
+
+    <div id="ft">
+		<div class="container">
+			<div class="ft">
+				<p class="logo"><img src="/images/common/logo_bt.png" alt="I SEOUL U 너와 나의 서울"></p>
+				<ul class="ft_link cfix">
+					<li><a href="/privacy/privacy.do">개인정보 처리방침</a></li>
+					<li><a href="https://www.seoul.go.kr/helper/copyright.do" target="_blank" title="저작권 정책 새창열기">저작권 정책</a></li>
+					<li><a href="https://www.seoul.go.kr/helper/media.do" target="_blank" title="영상정보처리기기 운영 관리방침 새창열기">영상정보처리기기 운영 관리방침</a></li>
+					<li><a href="/sitemap/list.do">사이트맵</a></li>
+					<li><a href="http://org.seoul.go.kr/org/orgChart.do" target="_blank" title="조직도새창열기">조직도</a></li>
+				</ul>
+				<p class="ft_info">
+					서울특별시청 04524 서울특별시 중구 세종대로 110 (<a href="http://www.seoul.go.kr/seoul/map.do" target="_blank" title="찾아오시는길 새창열기">찾아오시는길</a>) <span class="pc">ㅣ</span><br class="mobile"> 문의처 : 02-120<br>
+					Copyright Seoul Metropolitan Government all rights reserved.
+				</p>
+				<div class="wa_mark-box ft_wa_mark">
+					<p class="m-logo"><img src="/images/common/logo_bt.png" alt="I SEOUL U 너와 나의 서울"></p>
+					<span class="wa-mark"><a href="http://www.webwatch.or.kr/Situation/WA_Situation.html?MenuCD=110" title="국가 공인 인증기관 : 웹와치" target="_blank"><img src="/images/common/logo_wa.gif" alt="과학기술정보통신부 WEB ACCESSIBILITY 마크(웹 접근성 품질인증 마크)"></a></span>
+					<div>
+						<span><img src="/images/common/ISMS-P.png" alt="ismsp 정보보호 및 개인정보 보호관리체계 인증"></span>
+						<p class="txt">
+							<span>[인증범위]</span> 서울시행정시스템 및 홈페이지 운영<br>
+							<span>[유효기간]</span> 2020.06.24~2023.06.23
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+	<!-- fotter end -->
+</div>
+<!-- 웹로그 분석을 위한 스크립트 삽입 부분 시작  2016.11.21-->
+<script src="//weblog.eseoul.go.kr/wlo/js/install.js"></script>
+<!-- 웹로그 분석을 위한 스크립트 삽입 부분 끝 2016.11.21-->
+
+</body></html>
